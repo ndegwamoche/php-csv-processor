@@ -2,10 +2,11 @@
 
 This project is a PHP script designed to process a CSV file and insert the data into a PostgreSQL database. The script is executed from the command line and includes various options for creating the database table, running in dry-run mode, and more.
 
-##Overview
+## Overview
+
 The user_upload.php script is designed to handle the bulk uploading of user data from a CSV file into a PostgreSQL database. The script can validate email addresses, format names, and ensure that records are only inserted if they meet the required criteria. Additionally, it can create or rebuild the necessary database table before inserting records. This project is suitable for scenarios where bulk user data needs to be imported and processed efficiently.
 
-##Features
+## Features
 
 - **CSV Parsing**: Reads user data from a CSV file.
 - **Email Validation**: Ensures that only records with valid email addresses are inserted into the database.
