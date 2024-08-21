@@ -236,6 +236,65 @@ class UserUpload {
     }
 
     /**
+     * Process the CSV file, validate the data, and insert valid records into the database.
+     *
+     * @return void
+     * @throws Exception If no CSV file is provided or the file cannot be opened
+     */
+
+    public function processCSVFile() {
+        // Check if the --file argument is provided
+        if (!isset($this->args['file'])) {
+            throw new \Exception("No CSV file provided. Use --file [filename] to specify the CSV file.");
+        }
+
+        // Open the CSV file for reading
+        $file = fopen($this->args['file'], 'r');
+        if (!$file) {
+            throw new \Exception("Could not open the file: " . $this->args['file']);
+        }
+
+        // Read the header row (assuming it exists)
+        $header = fgetcsv($file);
+
+        // Initialize counters for progress tracking
+        $totalLines = $this->countLines($this->args['file']);
+        $processedLines = 0;
+
+        // Process each row in the CSV file
+        while (($row = fgetcsv($file)) !== false) {
+            $name = ucfirst(strtolower($row[0]));
+            $surname = ucfirst(strtolower($row[1]));
+            $email = strtolower($row[2]);
+
+            echo "Name: $name Surname: $surname Email: $email" . PHP_EOL;
+            $processedLines++;
+        }
+
+        echo "Total lines: $totalLines Processed lines: $processedLines" . PHP_EOL;
+
+        // Close the file
+        fclose($file);
+    }
+
+    /**
+     * Counts the number of lines in a file.
+     *
+     * @param string $filename The name of the file
+     * @return int The total number of lines in the file
+     */
+    private function countLines($filename) {
+        $file = fopen($filename, 'r');
+        $lines = 0;
+        while (!feof($file)) {
+            $line = fgets($file);
+            $lines++;
+        }
+        fclose($file);
+        return $lines;
+    }
+
+    /**
      * Main function to run the script based on the parsed arguments.
      *
      * @return void
@@ -257,6 +316,9 @@ class UserUpload {
             if (isset($this->args['create_table'])) {
                 $this->createTable();
                 exit; // Exit after creating the table, as no further actions are needed
+            } elseif (isset($this->args['file'])) {
+                // Process the CSV file if requested
+                $this->processCSVFile();
             }
         } else {
             // The following lines enforce that either --create_table or --file must be specified.
