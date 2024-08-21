@@ -160,20 +160,20 @@ class UserUpload
     private function printHelp()
     {
         $this->printInfo(str_repeat('*', 100));
-        $this->printInfo(str_repeat('*', 23) . "                UserUpload Script Help                " . str_repeat('*', 23));
+        $this->printInfo(self::RESET . str_repeat('*', 23) . "                UserUpload Script Help                " . str_repeat('*', 23));
         $this->printInfo(str_repeat('*', 100));
         $this->printInfo("");
-        $this->printInfo("Usage:");
+        echo self::YELLOW . "Usage:" . self::RESET . PHP_EOL;
         $this->printInfo("  php user_upload.php [options]");
         $this->printInfo("");
-        $this->printInfo("Options:");
-        $this->printInfo("  --file [csv file name]      *Required*: The name of the CSV file to be processed.");
-        $this->printInfo("  --create_table              *Optional*: Creates the PostgreSQL users table and exits.");
-        $this->printInfo("  --dry_run                   *Optional*: Runs the script without inserting into the database, for testing purposes.");
-        $this->printInfo("  -u [username]               *Optional*: PostgreSQL username for database connection.");
-        $this->printInfo("  -p [password]               *Optional*: PostgreSQL password for database connection.");
-        $this->printInfo("  -h [host]                   *Optional*: PostgreSQL host, default is 'localhost'.");
-        $this->printInfo("  --help                      *Optional*: Displays this help message.");
+        echo self::YELLOW . "Options:" . self::RESET . PHP_EOL;
+        $this->printInfo("  --file [csv file name]      " . self::RESET . "*Required*: The name of the CSV file to be processed.");
+        $this->printInfo("  --create_table              " . self::RESET . "*Optional*: Creates the PostgreSQL users table and exits.");
+        $this->printInfo("  --dry_run                   " . self::RESET . "*Optional*: Runs the script without inserting into the database, for testing purposes.");
+        $this->printInfo("  -u [username]               " . self::RESET . "*Optional*: PostgreSQL username for database connection.");
+        $this->printInfo("  -p [password]               " . self::RESET . "*Optional*: PostgreSQL password for database connection.");
+        $this->printInfo("  -h [host]                   " . self::RESET . "*Optional*: PostgreSQL host, default is 'localhost'.");
+        $this->printInfo("  --help                      " . self::RESET . "*Optional*: Displays this help message.");
         $this->printInfo("");
         $this->printInfo(str_repeat('*', 100));
     }
@@ -255,6 +255,11 @@ class UserUpload
                 $this->createTable();
                 exit; // Exit after creating the table, as no further actions are needed
             }
+        } else {
+            // The following lines would normally enforce that either --create_table or --file must be specified.
+            $this->printError("You must specify either --create_table or --file to proceed." . "\nPlease use the options below to run the script.");
+            $this->printHelp();
+            exit(1);
         }
     }
 }
