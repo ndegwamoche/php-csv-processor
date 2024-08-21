@@ -118,20 +118,20 @@ class UserUpload
         try {
             // Check if the PDO PostgreSQL extension is loaded
             if (!extension_loaded('pgsql') || !extension_loaded('pdo_pgsql')) {
-                throw new Exception("Required PHP extensions for PostgreSQL are not installed." .
+                throw new \Exception("Required PHP extensions for PostgreSQL are not installed." .
                     " Please install or enable 'pgsql' and 'pdo_pgsql' extensions.");
             }
 
             // Create a PDO instance with the provided or default connection details
             $dsn = 'pgsql:host=' . $host . ';dbname=postgres';
-            $this->pdo = new PDO($dsn, $username, $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo = new \PDO($dsn, $username, $password);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->printInfo("Database connection successful.");
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             // Handle connection errors
             $this->printError("Database connection failed: " . $e->getMessage());
             exit(1);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Handle other errors
             $this->printError($e->getMessage());
             exit(1);
@@ -238,7 +238,7 @@ class UserUpload
             ";
             $this->pdo->exec($query);
             $this->printInfo("Table 'users' created successfully.");
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->printError("Failed to create table: " . $e->getMessage());
             exit;
         }
@@ -282,7 +282,7 @@ class UserUpload
 try {
     $userUpload = new UserUpload($argv);
     $userUpload->run();
-} catch (Exception $e) {
+} catch (\Exception $e) {
     echo "Error: " . $e->getMessage() . PHP_EOL;
     exit(1);
 }
