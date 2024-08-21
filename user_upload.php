@@ -3,13 +3,15 @@
 /**
  * The UserUpload class handles the initial setup for database connection and command-line argument parsing.
  * The script is designed to manage the bulk uploading of user data from a CSV file into a PostgreSQL database.
- * It can validate email addresses, format names, and ensure that records are only inserted if they meet the required criteria.
+ * It can validate email addresses, format names, and ensure that records are only inserted if they meet the criteria.
  * Additionally, it can create or rebuild the necessary database table before inserting records.
  * This project is suitable for scenarios where bulk user data needs to be imported and processed efficiently.
  *
  * Author: Martin Ndegwa Moche
  * Email: ndegwamoche@gmail.com
  */
+
+namespace moche\phpcsvprocessor;
 
 class UserUpload
 {
@@ -49,7 +51,8 @@ class UserUpload
                     if (isset($argv[$i + 1])) {
                         $args['file'] = $argv[++$i];
                     } else {
-                        $this->printError("No file name provided for --file option.. \nPlease use the options below to run the script.");
+                        $this->printError("No file name provided for --file option. " .
+                            "\nPlease use the options below to run the script.");
                         $this->printHelp();
                         exit(1);
                     }
@@ -91,7 +94,8 @@ class UserUpload
                     $this->printHelp();
                     exit;
                 default:
-                    $this->printError("Unknown argument: " . $argv[$i] . "\nPlease use the options below to run the script.");
+                    $this->printError("Unknown argument: " . $argv[$i] .
+                        "\nPlease use the options below to run the script.");
                     $this->printHelp();
                     exit(1);
             }
@@ -114,7 +118,8 @@ class UserUpload
         try {
             // Check if the PDO PostgreSQL extension is loaded
             if (!extension_loaded('pgsql') || !extension_loaded('pdo_pgsql')) {
-                throw new Exception("Required PHP extensions for PostgreSQL are not installed. Please install or enable 'pgsql' and 'pdo_pgsql' extensions.");
+                throw new Exception("Required PHP extensions for PostgreSQL are not installed." .
+                    " Please install or enable 'pgsql' and 'pdo_pgsql' extensions.");
             }
 
             // Create a PDO instance with the provided or default connection details
@@ -160,20 +165,29 @@ class UserUpload
     private function printHelp()
     {
         $this->printInfo(str_repeat('*', 100));
-        $this->printInfo(self::RESET . str_repeat('*', 23) . "                UserUpload Script Help                " . str_repeat('*', 23));
+        $this->printInfo(self::RESET . str_repeat('*', 23) .
+            "                UserUpload Script Help                " .
+            str_repeat('*', 23));
         $this->printInfo(str_repeat('*', 100));
         $this->printInfo("");
         echo self::YELLOW . "Usage:" . self::RESET . PHP_EOL;
         $this->printInfo("  php user_upload.php [options]");
         $this->printInfo("");
         echo self::YELLOW . "Options:" . self::RESET . PHP_EOL;
-        $this->printInfo("  --file [csv file name]      " . self::RESET . "*Required*: The name of the CSV file to be processed.");
-        $this->printInfo("  --create_table              " . self::RESET . "*Optional*: Creates the PostgreSQL users table and exits.");
-        $this->printInfo("  --dry_run                   " . self::RESET . "*Optional*: Runs the script without inserting into the database, for testing purposes.");
-        $this->printInfo("  -u [username]               " . self::RESET . "*Optional*: PostgreSQL username for database connection.");
-        $this->printInfo("  -p [password]               " . self::RESET . "*Optional*: PostgreSQL password for database connection.");
-        $this->printInfo("  -h [host]                   " . self::RESET . "*Optional*: PostgreSQL host, default is 'localhost'.");
-        $this->printInfo("  --help                      " . self::RESET . "*Optional*: Displays this help message.");
+        $this->printInfo("  --file [csv file name]      " . self::RESET .
+            "*Required*: The name of the CSV file to be processed.");
+        $this->printInfo("  --create_table              " . self::RESET .
+            "*Optional*: Creates the PostgreSQL users table and exits.");
+        $this->printInfo("  --dry_run                   " . self::RESET .
+            "*Optional*: Runs the script without inserting into the database, for testing purposes.");
+        $this->printInfo("  -u [username]               " . self::RESET .
+            "*Optional*: PostgreSQL username for database connection.");
+        $this->printInfo("  -p [password]               " . self::RESET .
+            "*Optional*: PostgreSQL password for database connection.");
+        $this->printInfo("  -h [host]                   " . self::RESET .
+            "*Optional*: PostgreSQL host, default is 'localhost'.");
+        $this->printInfo("  --help                      " . self::RESET .
+            "*Optional*: Displays this help message.");
         $this->printInfo("");
         $this->printInfo(str_repeat('*', 100));
     }
@@ -246,7 +260,6 @@ class UserUpload
 
         // Establish a database connection if necessary
         if (isset($this->args['create_table']) || isset($this->args['file'])) {
-
             // Connect to the database
             $this->connectDatabase();
 
@@ -257,7 +270,8 @@ class UserUpload
             }
         } else {
             // The following lines would normally enforce that either --create_table or --file must be specified.
-            $this->printError("You must specify either --create_table or --file to proceed." . "\nPlease use the options below to run the script.");
+            $this->printError("You must specify either --create_table or --file to proceed." .
+                "\nPlease use the options below to run the script.");
             $this->printHelp();
             exit(1);
         }
