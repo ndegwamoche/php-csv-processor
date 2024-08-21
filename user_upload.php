@@ -45,7 +45,14 @@ class UserUpload
         for ($i = 1; $i < count($argv); $i++) {
             switch ($argv[$i]) {
                 case '--file':
-                    $args['file'] = $argv[++$i];
+                    // Ensure there is a value after --file
+                    if (isset($argv[$i + 1])) {
+                        $args['file'] = $argv[++$i];
+                    } else {
+                        $this->printError("Error: No file name provided for --file option.. \n Please use the options below to run the script.");
+                        $this->printHelp();
+                        exit(1);
+                    }
                     break;
                 case '--create_table':
                     $args['create_table'] = true;
@@ -54,19 +61,38 @@ class UserUpload
                     $args['dry_run'] = true;
                     break;
                 case '-u':
-                    $args['username'] = $argv[++$i];
+                    if (isset($argv[$i + 1])) {
+                        $args['username'] = $argv[++$i];
+                    } else {
+                        $this->printError("Error: No username provided for -u option.");
+                        $this->printHelp();
+                        exit(1);
+                    }
                     break;
                 case '-p':
-                    $args['password'] = $argv[++$i];
+                    if (isset($argv[$i + 1])) {
+                        $args['password'] = $argv[++$i];
+                    } else {
+                        $this->printError("Error: No password provided for -p option.");
+                        $this->printHelp();
+                        exit(1);
+                    }
                     break;
                 case '-h':
-                    $args['host'] = $argv[++$i];
+                    if (isset($argv[$i + 1])) {
+                        $args['host'] = $argv[++$i];
+                    } else {
+                        $this->printError("Error: No host provided for -h option.");
+                        $this->printHelp();
+                        exit(1);
+                    }
                     break;
                 case '--help':
                     $this->printHelp();
                     exit;
                 default:
-                    $this->printError("Unknown argument: " . $argv[$i]);
+                    $this->printError("Error: Unknown argument: " . $argv[$i] . "\nPlease use the options below to run the script.");
+                    $this->printHelp();
                     exit(1);
             }
         }
@@ -86,6 +112,11 @@ class UserUpload
         $password = $this->args['password'] ?? $this->prompt('Enter PostgreSQL password: ', '', true);
 
         try {
+            // Check if the PDO PostgreSQL extension is loaded
+            if (!extension_loaded('pgsql') || !extension_loaded('pdo_pgsql')) {
+                throw new Exception("Required PHP extensions for PostgreSQL are not installed. Please install or enable 'pgsql' and 'pdo_pgsql' extensions.");
+            }
+
             // Create a PDO instance with the provided or default connection details
             $dsn = 'pgsql:host=' . $host . ';dbname=postgres';
             $this->pdo = new PDO($dsn, $username, $password);
@@ -94,6 +125,10 @@ class UserUpload
         } catch (PDOException $e) {
             // Handle connection errors
             $this->printError("Database connection failed: " . $e->getMessage());
+            exit(1);
+        } catch (Exception $e) {
+            // Handle other errors
+            $this->printError($e->getMessage());
             exit(1);
         }
     }
@@ -218,7 +253,7 @@ class UserUpload
     {
         // Check if any command-line arguments were provided
         if (empty($this->args)) {
-            $this->printError("Please enter a command to start");
+            $this->printError("Please enter a command to start" . "\nPlease use the options below to run the script.");
             $this->printHelp();
             exit(1);
         }
