@@ -62,6 +62,58 @@ The script includes functionality to create or rebuild the 'users' table in the 
    );
    ```
 
+# CSV Processing Script Documentation
+
+## Overview
+
+This documentation covers the functionality added to the CSV processing script, including CSV parsing, line counting, name capitalization, and email normalization. The script handles reading from a CSV file, validating and formatting data, and preparing it for further processing.
+
+## Features
+
+### CSV Parsing
+
+-   **Functionality**: The script parses CSV files to read user data.
+-   **Details**: Each row of the CSV file is read and processed to extract user information.
+-   **File Handling**: Handles file operations with improved error checking and validation.
+
+### Line Counting
+
+-   **Functionality**: The script includes a function to count the number of lines in a CSV file.
+-   **Purpose**: Helps determine the size of the file and manage processing efficiently.
+
+### Name and Email Formatting
+
+-   **Name Capitalization**: Names are capitalized before processing:
+    -   **Example**: Converts 'john' to 'John'.
+-   **Email Normalization**: Email addresses are converted to lowercase before processing:
+    -   **Example**: Converts 'JOHN@EXAMPLE.COM' to 'john@example.com'.
+
+## Functions
+
+### `processFile()`
+
+-   **Purpose**: Parses the CSV file, validates, and formats user data.
+-   **Steps**:
+    1.  Checks if the file argument is provided.
+    2.  Opens and reads the CSV file.
+    3.  Skips the header row.
+    4.  Processes each row:
+        -   Capitalizes names.
+        -   Converts emails to lowercase.
+    5.  Displays processed data or performs a dry run based on the `--dry_run` flag.
+
+### `countLines($filename)`
+
+-   **Purpose**: Counts the total number of lines in a CSV file.
+-   **Parameters**:
+    -   `$filename` (string): The path to the CSV file.
+-   **Returns**: Integer value representing the number of lines in the file.
+
+## Error Handling
+
+-   **File Errors**: Provides descriptive messages if the file cannot be opened or if the file argument is missing.
+-   **Email Validation**: Checks and reports invalid email formats.
+
 ## **Windows: Enabling PostgreSQL Extensions for PHP**
 
 ### **Step 1: Verify PHP Installation**
