@@ -13,8 +13,7 @@
 
 namespace moche\phpcsvprocessor;
 
-class UserUpload
-{
+class UserUpload {
     private $pdo;     // PDO instance for database connection
     private $args;    // Array to store command-line arguments
 
@@ -29,8 +28,7 @@ class UserUpload
      *
      * @param array $argv Command-line arguments
      */
-    public function __construct($argv)
-    {
+    public function __construct($argv) {
         // Parse the command-line arguments
         $this->args = $this->parseArguments($argv);
     }
@@ -41,8 +39,7 @@ class UserUpload
      * @param  array $argv Command-line arguments
      * @return array Parsed arguments
      */
-    private function parseArguments($argv)
-    {
+    private function parseArguments($argv) {
         $args = [];
         for ($i = 1; $i < count($argv); $i++) {
             switch ($argv[$i]) {
@@ -108,8 +105,7 @@ class UserUpload
      *
      * @return void
      */
-    private function connectDatabase()
-    {
+    private function connectDatabase() {
         // Prompt for missing connection details
         $host = $this->args['host'] ?? $this->prompt('Enter PostgreSQL host (default: localhost): ', 'localhost');
         $username = $this->args['username'] ?? $this->prompt('Enter PostgreSQL username: ');
@@ -117,7 +113,7 @@ class UserUpload
 
         try {
             // Check if the PDO PostgreSQL extension is loaded
-            if (!extension_loaded('pgsql') || !extension_loaded('pdo_pgsql')) {
+            if (!extension_loaded('pdo_pgsql')) {
                 throw new \Exception("Required PHP extensions for PostgreSQL are not installed." .
                     " Please install or enable 'pgsql' and 'pdo_pgsql' extensions.");
             }
@@ -150,8 +146,7 @@ class UserUpload
      * @return string The user's input or the default value if no input is provided.
      */
 
-    private function prompt($message, $default = '')
-    {
+    private function prompt($message, $default = '') {
         echo $message;
         $input = trim(fgets(STDIN));
         return empty($input) ? $default : $input;
@@ -162,8 +157,7 @@ class UserUpload
      *
      * @return void
      */
-    private function printHelp()
-    {
+    private function printHelp() {
         $this->printInfo(str_repeat('*', 100));
         $this->printInfo(self::RESET . str_repeat('*', 23) .
             "                UserUpload Script Help                " .
@@ -198,8 +192,7 @@ class UserUpload
      * @param string $message Message to display
      * @return void
      */
-    private function printInfo($message)
-    {
+    private function printInfo($message) {
         echo self::GREEN . $message . self::RESET . PHP_EOL;
     }
 
@@ -209,8 +202,7 @@ class UserUpload
      * @param string $message Message to display
      * @return void
      */
-    private function printError($message)
-    {
+    private function printError($message) {
         echo self::RED . "Error: " . $message . self::RESET . PHP_EOL;
     }
 
@@ -225,8 +217,7 @@ class UserUpload
      *
      * @return void
      */
-    public function createTable()
-    {
+    public function createTable() {
         try {
             $query = "
                 CREATE TABLE IF NOT EXISTS users (
@@ -249,8 +240,7 @@ class UserUpload
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         // Check if any command-line arguments were provided
         if (empty($this->args)) {
             $this->printError("Please enter a command to start" . "\nPlease use the options below to run the script.");
@@ -269,7 +259,7 @@ class UserUpload
                 exit; // Exit after creating the table, as no further actions are needed
             }
         } else {
-            // The following lines would normally enforce that either --create_table or --file must be specified.
+            // The following lines enforce that either --create_table or --file must be specified.
             $this->printError("You must specify either --create_table or --file to proceed." .
                 "\nPlease use the options below to run the script.");
             $this->printHelp();
