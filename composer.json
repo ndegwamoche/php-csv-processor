@@ -9,5 +9,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require-dev": {
+        "squizlabs/php_codesniffer": "4.0.x-dev"
+    }
 }
