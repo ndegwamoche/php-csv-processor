@@ -1,4 +1,4 @@
-## PHP CSV Processor
+# PHP CSV Processor
 
 This project is a PHP script designed to process a CSV file and insert the data into a PostgreSQL database. The script is executed from the command line and includes various options for creating the database table, running in dry-run mode, and more.
 
@@ -114,7 +114,7 @@ This documentation covers the functionality added to the CSV processing script, 
 -   **File Errors**: Provides descriptive messages if the file cannot be opened or if the file argument is missing.
 -   **Email Validation**: Checks and reports invalid email formats.
 
-## **Windows: Enabling PostgreSQL Extensions for PHP**
+# **Windows: Enabling PostgreSQL Extensions for PHP**
 
 ### **Step 1: Verify PHP Installation**
 
@@ -181,7 +181,7 @@ This documentation covers the functionality added to the CSV processing script, 
     
 2.  Access this file from your web browser (e.g., `http://localhost/phpinfo.php`) and search for "pgsql" and "pdo_pgsql" to ensure the extensions are enabled.
 
-## **Unix/Linux: Installing and Enabling PostgreSQL Extensions for PHP**
+# **Unix/Linux: Installing and Enabling PostgreSQL Extensions for PHP**
 
 ### **Step 1: Install PostgreSQL and PHP**
 
