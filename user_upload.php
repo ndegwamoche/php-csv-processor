@@ -49,7 +49,7 @@ class UserUpload
                     if (isset($argv[$i + 1])) {
                         $args['file'] = $argv[++$i];
                     } else {
-                        $this->printError("Error: No file name provided for --file option.. \n Please use the options below to run the script.");
+                        $this->printError("No file name provided for --file option.. \nPlease use the options below to run the script.");
                         $this->printHelp();
                         exit(1);
                     }
@@ -64,7 +64,7 @@ class UserUpload
                     if (isset($argv[$i + 1])) {
                         $args['username'] = $argv[++$i];
                     } else {
-                        $this->printError("Error: No username provided for -u option.");
+                        $this->printError("No username provided for -u option.");
                         $this->printHelp();
                         exit(1);
                     }
@@ -73,7 +73,7 @@ class UserUpload
                     if (isset($argv[$i + 1])) {
                         $args['password'] = $argv[++$i];
                     } else {
-                        $this->printError("Error: No password provided for -p option.");
+                        $this->printError("No password provided for -p option.");
                         $this->printHelp();
                         exit(1);
                     }
@@ -82,7 +82,7 @@ class UserUpload
                     if (isset($argv[$i + 1])) {
                         $args['host'] = $argv[++$i];
                     } else {
-                        $this->printError("Error: No host provided for -h option.");
+                        $this->printError("No host provided for -h option.");
                         $this->printHelp();
                         exit(1);
                     }
@@ -91,7 +91,7 @@ class UserUpload
                     $this->printHelp();
                     exit;
                 default:
-                    $this->printError("Error: Unknown argument: " . $argv[$i] . "\nPlease use the options below to run the script.");
+                    $this->printError("Unknown argument: " . $argv[$i] . "\nPlease use the options below to run the script.");
                     $this->printHelp();
                     exit(1);
             }
@@ -134,66 +134,22 @@ class UserUpload
     }
 
     /**
-     * Prompt user for input with optional hiding of input.
+     * Prompts the user for input and returns the entered value.
      *
-     * @param  string $message Prompt message to display
-     * @param  string $default Default value if no input is provided
-     * @param  bool   $hideInput Whether to hide the input (for passwords)
-     * @return string User input
+     * This method displays a message to the user and reads a line of input from
+     * the standard input (STDIN). If no input is provided, it returns a default
+     * value if specified.
+     *
+     * @param string $message The message to display to the user.
+     * @param string $default The default value to return if no input is provided.
+     * @return string The user's input or the default value if no input is provided.
      */
-    private function prompt($message, $default = '', $hideInput = false)
+
+    private function prompt($message, $default = '')
     {
         echo $message;
-        $input = $hideInput ? $this->readHiddenInput() : trim(fgets(STDIN));
+        $input = trim(fgets(STDIN));
         return empty($input) ? $default : $input;
-    }
-
-    /**
-     * Read hidden input for password (platform-specific handling).
-     *
-     * @return string User input
-     */
-    private function readHiddenInput()
-    {
-        if (PHP_OS_FAMILY === 'Windows') {
-            return $this->readHiddenInputWindows();
-        } else {
-            return $this->readHiddenInputUnix();
-        }
-    }
-
-    /**
-     * Read hidden input on Windows using PowerShell.
-     *
-     * @return string User input
-     */
-    private function readHiddenInputWindows()
-    {
-        $value = '';
-        $command = 'powershell -Command "[System.Console]::ReadKey($true).KeyChar"';
-        exec($command, $output);
-        foreach ($output as $char) {
-            if ($char === "\r") {
-                break;
-            }
-            $value .= $char;
-        }
-        return $value;
-    }
-
-    /**
-     * Read hidden input on Unix-like systems using stty.
-     *
-     * @return string User input
-     */
-    private function readHiddenInputUnix()
-    {
-        $value = '';
-        exec('stty -echo');
-        $value = rtrim(fgets(STDIN));
-        exec('stty echo');
-        echo PHP_EOL; // Move to the next line
-        return $value;
     }
 
     /**
@@ -204,7 +160,7 @@ class UserUpload
     private function printHelp()
     {
         $this->printInfo(str_repeat('*', 100));
-        $this->printInfo(str_repeat('*', 20) . "                UserUpload Script Help                " . str_repeat('*', 20));
+        $this->printInfo(str_repeat('*', 23) . "                UserUpload Script Help                " . str_repeat('*', 23));
         $this->printInfo(str_repeat('*', 100));
         $this->printInfo("");
         $this->printInfo("Usage:");
@@ -245,6 +201,36 @@ class UserUpload
     }
 
     /**
+     * Create the PostgreSQL users table.
+     *
+     * This method creates a 'users' table in the PostgreSQL database with the following columns:
+     * - id (SERIAL PRIMARY KEY): A unique identifier for each user.
+     * - name (VARCHAR(255) NOT NULL): The name of the user.
+     * - surname (VARCHAR(255) NOT NULL): The surname of the user.
+     * - email (VARCHAR(255) NOT NULL UNIQUE): The email address of the user, which must be unique.
+     *
+     * @return void
+     */
+    public function createTable()
+    {
+        try {
+            $query = "
+                CREATE TABLE IF NOT EXISTS users (
+                    id SERIAL PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
+                    surname VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL UNIQUE
+                );
+            ";
+            $this->pdo->exec($query);
+            $this->printInfo("Table 'users' created successfully.");
+        } catch (PDOException $e) {
+            $this->printError("Failed to create table: " . $e->getMessage());
+            exit;
+        }
+    }
+
+    /**
      * Main function to run the script based on the parsed arguments.
      *
      * @return void
@@ -260,13 +246,16 @@ class UserUpload
 
         // Establish a database connection if necessary
         if (isset($this->args['create_table']) || isset($this->args['file'])) {
+
+            // Connect to the database
             $this->connectDatabase();
+
+            // Create the users table if requested
+            if (isset($this->args['create_table'])) {
+                $this->createTable();
+                exit; // Exit after creating the table, as no further actions are needed
+            }
         }
-
-        // Proceed with the script logic if arguments are present
-        $this->printInfo("Running UserUpload script...");
-
-        // Add additional logic here based on the provided arguments
     }
 }
 
