@@ -255,25 +255,42 @@ class UserUpload
     {
         // Check if the --file argument is provided
         if (!isset($this->args['file'])) {
-            throw new \Exception("No CSV file provided. Use --file [filename] to specify the CSV file.");
+            $this->printError("No CSV file provided. Use --file [filename] to specify the CSV file.");
+            $this->printHelp();
+            exit(1);
+        }
+
+        $fileName = $this->args['file'];
+
+        // Validate the CSV file
+        if (!$this->isValidCsvFile($fileName)) {
+            $this->printError("Invalid CSV file: " . $fileName . PHP_EOL);
+            $this->printHelp();
+            exit(1);
         }
 
         // Open the CSV file for reading
-        $file = fopen($this->args['file'], 'r');
+        $file = fopen($fileName, 'r');
         if (!$file) {
-            throw new \Exception("Could not open the file: " . $this->args['file']);
+            $this->printError("Could not open the file: " . $fileName);
+            $this->printHelp();
+            exit(1);
         }
 
         // Read the header row (assuming it exists)
         $header = fgetcsv($file);
 
         // Initialize counters for progress tracking
-        $totalLines = $this->countLines($this->args['file']);
-
+        $totalLines = $this->countLines($fileName);
         $processedLines = 0;
 
         // Process each row in the CSV file
         while (($row = fgetcsv($file)) !== false) {
+            if (count($row) < 3) {
+                // Skip rows with insufficient data; ensures that each row in the CSV file has at least three columns
+                continue;
+            }
+
             $name = ucfirst(strtolower($row[0]));
             $surname = ucfirst(strtolower($row[1]));
             $email = strtolower($row[2]);
@@ -299,6 +316,68 @@ class UserUpload
         // Close the file
         fclose($file);
     }
+
+
+    /**
+     * Validate if the given file is a valid CSV file.
+     *
+     * This function performs several checks:
+     * - Ensures the file exists and is readable.
+     * - Verifies the file has a .csv extension.
+     * - Checks the MIME type to ensure it matches that of a CSV file.
+     * - Attempts to parse the file as CSV and verifies consistent column count across rows.
+     *
+     * @param  string $filename The path to the file to be validated.
+     * @return bool True if the file is a valid CSV, false otherwise.
+     */
+    private function isValidCsvFile($filename)
+    {
+        // Check if file exists and is readable
+        if (!file_exists($filename) || !is_readable($filename)) {
+            return false;
+        }
+
+        // Check the file extension
+        $fileExtension = pathinfo($filename, PATHINFO_EXTENSION);
+        if (strtolower($fileExtension) !== 'csv') {
+            return false;
+        }
+
+        // Check MIME type
+        $mimeType = mime_content_type($filename);
+        $validMimeTypes = ['text/csv', 'application/vnd.ms-excel'];
+        if (!in_array($mimeType, $validMimeTypes)) {
+            return false;
+        }
+
+        // Attempt to parse the file to check if it's valid CSV
+        if (($handle = fopen($filename, 'r')) !== false) {
+            $rowCount = 0;
+            $columnCount = null;
+
+            while (($data = fgetcsv($handle)) !== false) {
+                $rowCount++;
+                // On the first row, store the column count
+                if ($columnCount === null) {
+                    $columnCount = count($data);
+                } else {
+                    // Check if the current row has the same number of columns
+                    if (count($data) !== $columnCount) {
+                        fclose($handle);
+                        return false; // Mismatch in column count
+                    }
+                }
+            }
+
+            fclose($handle);
+
+            // Check if there were any rows
+            return $rowCount > 0;
+        }
+
+        return false;
+    }
+
 
     /**
      * Validate email address format.
@@ -331,7 +410,6 @@ class UserUpload
         $lines--; // Subtract 1 to account for the header row
         return $lines;
     }
-
 
     /**
      * Main function to run the script based on the parsed arguments.
