@@ -127,20 +127,39 @@ To ensure that only valid CSV files are processed, the script includes a method 
 
 Before processing a CSV file, call the `isValidCsvFile` method to validate it. This method will help to avoid errors by confirming the file meets the required criteria.
 
-**Example Usage:**
+### insertUsers(array $users)
+
+The insertUsers function is responsible for inserting multiple user records into the database. It accepts an array of user data and processes each record individually.
+
+- **Purpose**: Inserts multiple user records into the database.
+- **Parameters**:
+  - `$users` (array): An array of associative arrays, each containing 'name', 'surname', and 'email' keys for the user record.
+
+#### Parameters
+
+- **$users**: An array of associative arrays, where each associative array represents a user. Each user array should include the following keys:
+- **name**: The first name of the user.
+- **surname**: The last name of the user.
+- **email**: The email address of the user.
+
+#### Functionality:
+
+The `insertUsers` function loops through each user in the provided array and inserts the user record into the database. If an error occurs during the insertion of a specific record, the function will log the error and continue processing the remaining records.
+
+#### Example Usage:
 
 php
 
 Copy code
 
-`$fileName = $this->args['file'];
+`$users = [
+['name' => 'John', 'surname' => 'Doe', 'email' => 'john.doe@example.com'],
+['name' => 'Jane', 'surname' => 'Smith', 'email' => 'jane.smith@example.com']
+];
 
-// Validate the CSV file
-if (!$this->isValidCsvFile($fileName)) {
-throw new \Exception("Invalid CSV file: " . $fileName . PHP_EOL);
-}`
+$this->insertUsers($users);`
 
-This approach provides a clear understanding of th
+In this example, the `insertUsers` function will attempt to insert each user into the database, logging any errors that occur and continuing with the next user.
 
 ## Error Handling
 

@@ -247,8 +247,8 @@ class UserUpload
     /**
      * Processes a CSV file and inserts valid user records into the database.
      *
-     * This method validates the provided CSV file, reads and processes each row, 
-     * and inserts valid user records into the database. If the file contains invalid 
+     * This method validates the provided CSV file, reads and processes each row,
+     * and inserts valid user records into the database. If the file contains invalid
      * email formats or other issues, appropriate messages are displayed.
      */
 
@@ -309,9 +309,11 @@ class UserUpload
             } else {
                 // Output invalid email format message
                 if (empty($email)) {
-                    $this->printError("Failed: $name $surname $email " . self::YELLOW . "Empty email" . self::RESET . PHP_EOL);
+                    $this->printError("Failed: $name $surname $email " . self::YELLOW .
+                        "Empty email" . self::RESET . PHP_EOL);
                 } else {
-                    $this->printError("Failed: $name $surname $email " . self::YELLOW . "Invalid email format" . self::RESET . PHP_EOL);
+                    $this->printError("Failed: $name $surname $email " . self::YELLOW .
+                        "Invalid email format" . self::RESET . PHP_EOL);
                 }
             }
         }
@@ -329,11 +331,11 @@ class UserUpload
     /**
      * Inserts multiple user records into the database.
      *
-     * This method inserts each user record individually without using transactions. 
-     * If an error occurs during the insertion of a specific record, it is handled 
+     * This method inserts each user record in the provided array into the database.
+     * If an error occurs during the insertion of a specific record, it is handled
      * individually, allowing the script to continue inserting the remaining records.
      *
-     * @param array $users An array of associative arrays, each containing 'name', 
+     * @param array $users An array of associative arrays, each containing 'name',
      *                     'surname', and 'email' keys for the user record.
      */
     private function insertUsers(array $users)
@@ -351,7 +353,8 @@ class UserUpload
                 ]);
             } catch (\PDOException $e) {
                 // Handle the error for this specific user
-                $this->printError("Failed: " . $user['name'] . " " . $user['surname'] . " " . $user['email'] . " " . self::RESET . $e->getMessage());
+                $this->printError("Failed: " . $user['name'] . " " . $user['surname'] . " 
+                " . $user['email'] . " " . self::RESET . $e->getMessage());
             }
         }
     }
