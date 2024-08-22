@@ -245,10 +245,11 @@ class UserUpload
     }
 
     /**
-     * Process the CSV file, validate the data, and insert valid records into the database.
+     * Processes a CSV file and inserts valid user records into the database.
      *
-     * @return void
-     * @throws Exception If no CSV file is provided or the file cannot be opened
+     * This method validates the provided CSV file, reads and processes each row, 
+     * and inserts valid user records into the database. If the file contains invalid 
+     * email formats or other issues, appropriate messages are displayed.
      */
 
     public function processCSVFile()
@@ -277,12 +278,12 @@ class UserUpload
             exit(1);
         }
 
-        // Read the header row (assuming it exists)
-        $header = fgetcsv($file);
+        // Skip the header row if it exists
+        fgetcsv($file);
 
-        // Initialize counters for progress tracking
-        $totalLines = $this->countLines($fileName);
-        $processedLines = 0;
+        $users = []; // Array to store user records
+        $totalLines = $this->countLines($fileName); // Get the total number of lines in the file
+        $processedLines = 0; // Counter for processed lines
 
         // Process each row in the CSV file
         while (($row = fgetcsv($file)) !== false) {
@@ -291,32 +292,69 @@ class UserUpload
                 continue;
             }
 
+            // Extract and format user data
             $name = ucfirst(strtolower($row[0]));
             $surname = ucfirst(strtolower($row[1]));
             $email = strtolower($row[2]);
 
             // Validate email format
             if ($this->validateEmail($email)) {
+                // Add valid user record to the array
+                $users[] = ['name' => $name, 'surname' => $surname, 'email' => $email];
+
                 // Output validated emails
                 echo "Name: $name Surname: $surname Email: $email" . PHP_EOL;
+
+                $processedLines++;
             } else {
                 // Output invalid email format message
                 if (empty($email)) {
-                    echo "Invalid email format: Empty email" . PHP_EOL;
+                    $this->printError("Failed: $name $surname $email " . self::YELLOW . "Empty email" . self::RESET . PHP_EOL);
                 } else {
-                    echo "Invalid email format: $email" . PHP_EOL;
+                    $this->printError("Failed: $name $surname $email " . self::YELLOW . "Invalid email format" . self::RESET . PHP_EOL);
                 }
             }
-
-            $processedLines++;
         }
 
+        fclose($file); // Close the file
+
+        // Insert valid users into the database if there are any
+        if (!empty($users)) {
+            $this->insertUsers($users);
+        }
+
+        // Output the total and processed line counts
         echo "Total lines: $totalLines Processed lines: $processedLines" . PHP_EOL;
-
-        // Close the file
-        fclose($file);
     }
+    /**
+     * Inserts multiple user records into the database.
+     *
+     * This method inserts each user record individually without using transactions. 
+     * If an error occurs during the insertion of a specific record, it is handled 
+     * individually, allowing the script to continue inserting the remaining records.
+     *
+     * @param array $users An array of associative arrays, each containing 'name', 
+     *                     'surname', and 'email' keys for the user record.
+     */
+    private function insertUsers(array $users)
+    {
+        // Prepare the SQL statement for inserting a user
+        $stmt = $this->pdo->prepare("INSERT INTO users (name, surname, email) VALUES (:name, :surname, :email)");
 
+        // Loop through each user record and execute the prepared statement
+        foreach ($users as $user) {
+            try {
+                $stmt->execute([
+                    ':name' => $user['name'],
+                    ':surname' => $user['surname'],
+                    ':email' => $user['email']
+                ]);
+            } catch (\PDOException $e) {
+                // Handle the error for this specific user
+                $this->printError("Failed: " . $user['name'] . " " . $user['surname'] . " " . $user['email'] . " " . self::RESET . $e->getMessage());
+            }
+        }
+    }
 
     /**
      * Validate if the given file is a valid CSV file.
@@ -340,13 +378,6 @@ class UserUpload
         // Check the file extension
         $fileExtension = pathinfo($filename, PATHINFO_EXTENSION);
         if (strtolower($fileExtension) !== 'csv') {
-            return false;
-        }
-
-        // Check MIME type
-        $mimeType = mime_content_type($filename);
-        $validMimeTypes = ['text/csv', 'application/vnd.ms-excel'];
-        if (!in_array($mimeType, $validMimeTypes)) {
             return false;
         }
 
