@@ -277,7 +277,15 @@ class UserUpload
             $surname = ucfirst(strtolower($row[1]));
             $email = strtolower($row[2]);
 
-            echo "Name: $name Surname: $surname Email: $email" . PHP_EOL;
+            // Validate email format
+            if ($this->validateEmail($email)) {
+                // Output validated emails
+                echo "Name: $name Surname: $surname Email: $email" . PHP_EOL;
+            } else {
+                // Output invalid email format message
+                echo "Invalid email format: $email" . PHP_EOL;
+            }
+
             $processedLines++;
         }
 
@@ -285,6 +293,17 @@ class UserUpload
 
         // Close the file
         fclose($file);
+    }
+
+    /**
+     * Validate email address format.
+     *
+     * @param  string $email Email address to validate
+     * @return bool True if email is valid, false otherwise
+     */
+    private function validateEmail($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /**

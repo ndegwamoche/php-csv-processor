@@ -90,7 +90,7 @@ This documentation covers the functionality added to the CSV processing script, 
 
 ## Functions
 
-### `processFile()`
+### `processCSVFile()`
 
 - **Purpose**: Parses the CSV file, validates, and formats user data.
 - **Steps**:
@@ -164,12 +164,13 @@ To enforce coding standards before committing, you can add PHP CodeSniffer to yo
 
 1.  Create or edit the `.git/hooks/pre-commit` file:
 
-    bash
+        bash
 
-    Copy code
+        Copy code
 
-    `#!/bin/sh
-vendor/bin/phpcs --standard=PSR12 user_upload.php`
+        `#!/bin/sh
+
+    vendor/bin/phpcs --standard=PSR12 user_upload.php`
 
 2.  Make the pre-commit file executable:
 
@@ -203,27 +204,30 @@ vendor/bin/phpcs --standard=PSR12 user_upload.php`
 1.  Open the `php.ini` file in a text editor (e.g., Notepad, Notepad++, or VS Code).
 2.  Search for the following lines:
 
-    ini
+        ini
 
-    Copy code
+        Copy code
 
-    `;extension=pgsql
-;extension=pdo_pgsql`
+        `;extension=pgsql
+
+    ;extension=pdo_pgsql`
 
 3.  Uncomment these lines by removing the semicolons (`;`) at the beginning:
 
-    ini
+        ini
 
-    Copy code
+        Copy code
 
-    `extension=pgsql
-extension=pdo_pgsql`
+        `extension=pgsql
+
+    extension=pdo_pgsql`
 
 4.  Save the `php.ini` file.
 
 ### **Step 4: Restart Web Server (If Applicable)**
 
 1.  If you're using a web server like Apache or Nginx, restart it to apply the changes.
+
     - For Apache, you can restart it using the following command in Command Prompt:
 
       bash
@@ -252,21 +256,23 @@ extension=pdo_pgsql`
 
 1.  Ensure that both PostgreSQL and PHP are installed. You can verify using the following commands:
 
-    bash
+        bash
 
-    Copy code
+        Copy code
 
-    `php -v
-psql --version`
+        `php -v
+
+    psql --version`
 
 2.  If they are not installed, install them using your package manager. For example, on Ubuntu:
 
-    bash
+        bash
 
-    Copy code
+        Copy code
 
-    `sudo apt update
-sudo apt install php postgresql`
+        `sudo apt update
+
+    sudo apt install php postgresql`
 
 ### **Step 2: Install PHP PostgreSQL Extensions**
 
@@ -301,12 +307,13 @@ sudo apt install php postgresql`
 
 1.  Ensure that the following lines are present and uncommented in the `php.ini` file:
 
-    ini
+        ini
 
-    Copy code
+        Copy code
 
-    `extension=pgsql.so
-extension=pdo_pgsql.so`
+        `extension=pgsql.so
+
+    extension=pdo_pgsql.so`
 
 ### **Step 5: Restart Web Server**
 
