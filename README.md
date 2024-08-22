@@ -72,60 +72,125 @@ This documentation covers the functionality added to the CSV processing script, 
 
 ### CSV Parsing
 
--   **Functionality**: The script parses CSV files to read user data.
--   **Details**: Each row of the CSV file is read and processed to extract user information.
--   **File Handling**: Handles file operations with improved error checking and validation.
+- **Functionality**: The script parses CSV files to read user data.
+- **Details**: Each row of the CSV file is read and processed to extract user information.
+- **File Handling**: Handles file operations with improved error checking and validation.
 
 ### Line Counting
 
--   **Functionality**: The script includes a function to count the number of lines in a CSV file.
--   **Purpose**: Helps determine the size of the file and manage processing efficiently.
+- **Functionality**: The script includes a function to count the number of lines in a CSV file.
+- **Purpose**: Helps determine the size of the file and manage processing efficiently.
 
 ### Name and Email Formatting
 
--   **Name Capitalization**: Names are capitalized before processing:
-    -   **Example**: Converts 'john' to 'John'.
--   **Email Normalization**: Email addresses are converted to lowercase before processing:
-    -   **Example**: Converts 'JOHN@EXAMPLE.COM' to 'john@example.com'.
+- **Name Capitalization**: Names are capitalized before processing:
+  - **Example**: Converts 'john' to 'John'.
+- **Email Normalization**: Email addresses are converted to lowercase before processing:
+  - **Example**: Converts 'JOHN@EXAMPLE.COM' to 'john@example.com'.
 
 ## Functions
 
 ### `processFile()`
 
--   **Purpose**: Parses the CSV file, validates, and formats user data.
--   **Steps**:
-    1.  Checks if the file argument is provided.
-    2.  Opens and reads the CSV file.
-    3.  Skips the header row.
-    4.  Processes each row:
-        -   Capitalizes names.
-        -   Converts emails to lowercase.
-    5.  Displays processed data or performs a dry run based on the `--dry_run` flag.
+- **Purpose**: Parses the CSV file, validates, and formats user data.
+- **Steps**:
+  1.  Checks if the file argument is provided.
+  2.  Opens and reads the CSV file.
+  3.  Skips the header row.
+  4.  Processes each row:
+      - Capitalizes names.
+      - Converts emails to lowercase.
+  5.  Displays processed data or performs a dry run based on the `--dry_run` flag.
 
 ### `countLines($filename)`
 
--   **Purpose**: Counts the total number of lines in a CSV file.
--   **Parameters**:
-    -   `$filename` (string): The path to the CSV file.
--   **Returns**: Integer value representing the number of lines in the file.
+- **Purpose**: Counts the total number of lines in a CSV file.
+- **Parameters**:
+  - `$filename` (string): The path to the CSV file.
+- **Returns**: Integer value representing the number of lines in the file.
 
 ## Error Handling
 
--   **File Errors**: Provides descriptive messages if the file cannot be opened or if the file argument is missing.
--   **Email Validation**: Checks and reports invalid email formats.
+- **File Errors**: Provides descriptive messages if the file cannot be opened or if the file argument is missing.
+- **Email Validation**: Checks and reports invalid email formats.
+
+# Code Style and Standards
+
+## PHP CodeSniffer
+
+This project uses [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) to enforce PSR-12 coding standards, ensuring consistent code style across the project.
+
+## Installation
+
+If you already have Composer installed and a `composer.json` file set up in your project, you can install all the required dependencies, including PHP CodeSniffer, by running:
+
+bash
+
+Copy code
+
+`composer install`
+
+This command will install PHP CodeSniffer as a dev dependency, along with any other dependencies specified in your `composer.json`.
+
+## Usage
+
+You can use PHP CodeSniffer to check your code for style violations and to automatically fix issues.
+
+### Checking Code Style
+
+To check your code for coding standard violations, run:
+
+bash
+
+Copy code
+
+`vendor/bin/phpcs --standard=PSR12 user_upload.php`
+
+### Fixing Code Style Issues
+
+To automatically fix fixable coding standard violations, run:
+
+bash
+
+Copy code
+
+`vendor/bin/phpcbf --standard=PSR12 user_upload.php`
+
+## Integration and Automation
+
+### Git Hooks
+
+To enforce coding standards before committing, you can add PHP CodeSniffer to your Git hooks:
+
+1.  Create or edit the `.git/hooks/pre-commit` file:
+
+    bash
+
+    Copy code
+
+    `#!/bin/sh
+vendor/bin/phpcs --standard=PSR12 user_upload.php`
+
+2.  Make the pre-commit file executable:
+
+    bash
+
+    Copy code
+
+    `chmod +x .git/hooks/pre-commit`
 
 # **Windows: Enabling PostgreSQL Extensions for PHP**
 
 ### **Step 1: Verify PHP Installation**
 
 1.  Make sure PHP is installed on your system. You can verify by running the following command in Command Prompt or PowerShell:
-    
+
     bash
-    
+
     Copy code
-    
-    `php -v` 
-    
+
+    `php -v`
+
 2.  Confirm the version and installation path of PHP.
 
 ### **Step 2: Locate `php.ini` File**
@@ -137,48 +202,48 @@ This documentation covers the functionality added to the CSV processing script, 
 
 1.  Open the `php.ini` file in a text editor (e.g., Notepad, Notepad++, or VS Code).
 2.  Search for the following lines:
-    
+
     ini
-    
+
     Copy code
-    
+
     `;extension=pgsql
-    ;extension=pdo_pgsql` 
-    
+;extension=pdo_pgsql`
+
 3.  Uncomment these lines by removing the semicolons (`;`) at the beginning:
-    
+
     ini
-    
+
     Copy code
-    
+
     `extension=pgsql
-    extension=pdo_pgsql` 
-    
+extension=pdo_pgsql`
+
 4.  Save the `php.ini` file.
 
 ### **Step 4: Restart Web Server (If Applicable)**
 
 1.  If you're using a web server like Apache or Nginx, restart it to apply the changes.
-    -   For Apache, you can restart it using the following command in Command Prompt:
-        
-        bash
-        
-        Copy code
-        
-        `httpd -k restart` 
-        
-    -   If using XAMPP, restart Apache from the XAMPP Control Panel.
+    - For Apache, you can restart it using the following command in Command Prompt:
+
+      bash
+
+      Copy code
+
+      `httpd -k restart`
+
+    - If using XAMPP, restart Apache from the XAMPP Control Panel.
 
 ### **Step 5: Verify Installation**
 
 1.  Create a `phpinfo.php` file in your web server's root directory with the following content:
-    
+
     php
-    
+
     Copy code
-    
-    `<?php phpinfo(); ?>` 
-    
+
+    `<?php phpinfo(); ?>`
+
 2.  Access this file from your web browser (e.g., `http://localhost/phpinfo.php`) and search for "pgsql" and "pdo_pgsql" to ensure the extensions are enabled.
 
 # **Unix/Linux: Installing and Enabling PostgreSQL Extensions for PHP**
@@ -186,101 +251,96 @@ This documentation covers the functionality added to the CSV processing script, 
 ### **Step 1: Install PostgreSQL and PHP**
 
 1.  Ensure that both PostgreSQL and PHP are installed. You can verify using the following commands:
-    
+
     bash
-    
+
     Copy code
-    
+
     `php -v
-    psql --version` 
-    
+psql --version`
+
 2.  If they are not installed, install them using your package manager. For example, on Ubuntu:
-    
+
     bash
-    
+
     Copy code
-    
+
     `sudo apt update
-    sudo apt install php postgresql` 
-    
+sudo apt install php postgresql`
 
 ### **Step 2: Install PHP PostgreSQL Extensions**
 
 1.  Install the necessary PHP PostgreSQL extensions using your package manager. On Ubuntu or Debian-based systems:
-    
+
     bash
-    
+
     Copy code
-    
-    `sudo apt-get install php-pgsql` 
-    
+
+    `sudo apt-get install php-pgsql`
+
     On Red Hat or CentOS:
-    
+
     bash
-    
+
     Copy code
-    
-    `sudo yum install php-pgsql` 
-    
+
+    `sudo yum install php-pgsql`
 
 ### **Step 3: Locate and Edit `php.ini` File**
 
 1.  Find the `php.ini` file, usually located in `/etc/php/{version}/cli/php.ini` or `/etc/php/{version}/apache2/php.ini`.
 2.  Open it in a text editor:
-    
+
     bash
-    
+
     Copy code
-    
-    `sudo nano /etc/php/{version}/cli/php.ini` 
-    
+
+    `sudo nano /etc/php/{version}/cli/php.ini`
 
 ### **Step 4: Enable Extensions**
 
 1.  Ensure that the following lines are present and uncommented in the `php.ini` file:
-    
+
     ini
-    
+
     Copy code
-    
+
     `extension=pgsql.so
-    extension=pdo_pgsql.so` 
-    
+extension=pdo_pgsql.so`
 
 ### **Step 5: Restart Web Server**
 
 1.  Restart your web server to apply changes:
-    
+
     bash
-    
+
     Copy code
-    
-    `sudo systemctl restart apache2` 
-    
+
+    `sudo systemctl restart apache2`
+
     Or for Nginx:
-    
+
     bash
-    
+
     Copy code
-    
-    `sudo systemctl restart nginx` 
-    
+
+    `sudo systemctl restart nginx`
 
 ### **Step 6: Verify Installation**
 
 1.  Create a `phpinfo.php` file in your web server’s root directory:
-    
+
     bash
-    
+
     Copy code
-    
-    `echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/phpinfo.php` 
-    
+
+    `echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/phpinfo.php`
+
 2.  Open this file in a web browser (`http://your-server-ip/phpinfo.php`) and search for "pgsql" and "pdo_pgsql" to verify the extensions are enabled.
 
 ## **Common Troubleshooting Steps**
 
--   **Missing Extensions:** Ensure that the PHP extensions are correctly installed. If not, try reinstalling PHP and the extensions.
--   **Incorrect `php.ini` File:** Ensure you’re editing the correct `php.ini` file by checking the output of `phpinfo()`.
+- **Missing Extensions:** Ensure that the PHP extensions are correctly installed. If not, try reinstalling PHP and the extensions.
+- **Incorrect `php.ini` File:** Ensure you’re editing the correct `php.ini` file by checking the output of `phpinfo()`.
 
 Following these steps will help you enable PostgreSQL support in PHP on both Windows and Unix-based systems.
