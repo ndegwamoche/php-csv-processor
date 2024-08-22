@@ -127,7 +127,7 @@ To ensure that only valid CSV files are processed, the script includes a method 
 
 Before processing a CSV file, call the `isValidCsvFile` method to validate it. This method will help to avoid errors by confirming the file meets the required criteria.
 
-### insertUsers(array $users)
+### `insertUsers(array $users)`
 
 The insertUsers function is responsible for inserting multiple user records into the database. It accepts an array of user data and processes each record individually.
 
@@ -152,10 +152,12 @@ php
 
 Copy code
 
+```sql
 `$users = [
 ['name' => 'John', 'surname' => 'Doe', 'email' => 'john.doe@example.com'],
 ['name' => 'Jane', 'surname' => 'Smith', 'email' => 'jane.smith@example.com']
 ];
+```
 
 $this->insertUsers($users);`
 

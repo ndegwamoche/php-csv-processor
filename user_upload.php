@@ -284,6 +284,7 @@ class UserUpload
         $users = []; // Array to store user records
         $totalLines = $this->countLines($fileName); // Get the total number of lines in the file
         $processedLines = 0; // Counter for processed lines
+        $dryRun = isset($this->args['dry_run']); // Check if dry run is enabled
 
         // Process each row in the CSV file
         while (($row = fgetcsv($file)) !== false) {
@@ -320,13 +321,18 @@ class UserUpload
 
         fclose($file); // Close the file
 
-        // Insert valid users into the database if there are any
-        if (!empty($users)) {
+        // If not a dry run, insert valid users into the database
+        if (!$dryRun && !empty($users)) {
             $this->insertUsers($users);
         }
 
         // Output the total and processed line counts
         echo "Total lines: $totalLines Processed lines: $processedLines" . PHP_EOL;
+
+        // Notify if it's a dry run
+        if ($dryRun) {
+            $this->printInfo("Dry run completed: No data was inserted into the database." . PHP_EOL);
+        }
     }
     /**
      * Inserts multiple user records into the database.
@@ -472,6 +478,9 @@ class UserUpload
                 // Process the CSV file if requested
                 $this->processCSVFile();
             }
+        } elseif (isset($this->args['dry_run'])) {
+            $this->printInfo("Dry run mode enabled. No changes will be made to the database.");
+            $this->processCSVFile();
         } else {
             // The following lines enforce that either --create_table or --file must be specified.
             $this->printError("You must specify either --create_table or --file to proceed." .
