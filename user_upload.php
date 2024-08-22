@@ -269,6 +269,7 @@ class UserUpload
 
         // Initialize counters for progress tracking
         $totalLines = $this->countLines($this->args['file']);
+
         $processedLines = 0;
 
         // Process each row in the CSV file
@@ -283,7 +284,11 @@ class UserUpload
                 echo "Name: $name Surname: $surname Email: $email" . PHP_EOL;
             } else {
                 // Output invalid email format message
-                echo "Invalid email format: $email" . PHP_EOL;
+                if (empty($email)) {
+                    echo "Invalid email format: Empty email" . PHP_EOL;
+                } else {
+                    echo "Invalid email format: $email" . PHP_EOL;
+                }
             }
 
             $processedLines++;
@@ -316,13 +321,17 @@ class UserUpload
     {
         $file = fopen($filename, 'r');
         $lines = 0;
-        while (!feof($file)) {
-            $line = fgets($file);
+
+        while ($line = fgets($file)) {
             $lines++;
         }
-        fclose($file);
+
+        fclose($file); // Don't forget to close the file
+
+        $lines--; // Subtract 1 to account for the header row
         return $lines;
     }
+
 
     /**
      * Main function to run the script based on the parsed arguments.

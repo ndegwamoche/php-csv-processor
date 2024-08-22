@@ -114,6 +114,21 @@ This documentation covers the functionality added to the CSV processing script, 
 - **File Errors**: Provides descriptive messages if the file cannot be opened or if the file argument is missing.
 - **Email Validation**: Checks and reports invalid email formats.
 
+### Email Validation
+
+The `UserUpload` script now includes an email validation feature to ensure that only valid email addresses are processed and inserted into the PostgreSQL database. The validation is handled by the `validateEmail` method, which uses PHP's `filter_var()` function with the `FILTER_VALIDATE_EMAIL` filter.
+
+#### How It Works
+
+Before inserting user data into the database, the script checks each email address using the `validateEmail` method. If an email address does not pass the validation, it will be excluded from the insertion process, ensuring that only properly formatted email addresses are stored.
+
+#### Benefits
+
+- **Data Integrity**: Prevents invalid email addresses from being stored in the database.
+- **Improved Data Quality**: Ensures that only valid and usable email addresses are inserted.
+
+This feature is particularly useful in scenarios where clean and reliable user data is essential for the operation of the system, such as in email marketing or user authentication systems.
+
 # Code Style and Standards
 
 ## PHP CodeSniffer
