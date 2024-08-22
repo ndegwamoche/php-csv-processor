@@ -118,7 +118,7 @@ class UserUpload
         try {
             // Check if the PDO PostgreSQL extension is loaded
             if (!extension_loaded('pdo_pgsql')) {
-                throw new \Exception("Required PHP extensions for PostgreSQL are not installed." .
+                $this->printError("Required PHP extensions for PostgreSQL are not installed." .
                     " Please install or enable 'pgsql' and 'pdo_pgsql' extensions.");
             }
 

@@ -109,6 +109,39 @@ This documentation covers the functionality added to the CSV processing script, 
   - `$filename` (string): The path to the CSV file.
 - **Returns**: Integer value representing the number of lines in the file.
 
+### `isValidCsvFile($filename)`
+
+- **Purpose**: Validates if a CSV file is valid and meets the required criteria.
+- **Parameters**:
+  - `$filename` (string): The path to the CSV file.
+- **Returns**: Boolean value indicating if the file is valid.
+
+To ensure that only valid CSV files are processed, the script includes a method for validating CSV files. This method checks the following:
+
+- **File Existence and Readability:** Confirms the file exists and is readable.
+- **File Extension:** Ensures the file has a `.csv` extension.
+- **MIME Type:** Verifies the file's MIME type to ensure it's a CSV file.
+- **File Structure:** Checks for consistent column counts and ensures the file contains rows.
+
+**How to Use:**
+
+Before processing a CSV file, call the `isValidCsvFile` method to validate it. This method will help to avoid errors by confirming the file meets the required criteria.
+
+**Example Usage:**
+
+php
+
+Copy code
+
+`$fileName = $this->args['file'];
+
+// Validate the CSV file
+if (!$this->isValidCsvFile($fileName)) {
+throw new \Exception("Invalid CSV file: " . $fileName . PHP_EOL);
+}`
+
+This approach provides a clear understanding of th
+
 ## Error Handling
 
 - **File Errors**: Provides descriptive messages if the file cannot be opened or if the file argument is missing.
