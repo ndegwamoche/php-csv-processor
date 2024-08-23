@@ -1,422 +1,509 @@
 # PHP CSV Processor
 
-This project is a PHP script designed to process a CSV file and insert the data into a PostgreSQL database. The script is executed from the command line and includes various options for creating the database table, running in dry-run mode, and more.
+## Description
 
-## Overview
+The **PHP CSV Processor** is a command-line script designed for bulk importing user data from CSV files into a PostgreSQL database. This tool streamlines user record management by automating data validation, formatting, and database operations. It offers various command-line options for managing database schemas and performing data uploads, making it a versatile solution for database administrators and developers.
 
-The user_upload.php script is designed to handle the bulk uploading of user data from a CSV file into a PostgreSQL database. The script can validate email addresses, format names, and ensure that records are only inserted if they meet the required criteria. Additionally, it can create or rebuild the necessary database table before inserting records. This project is suitable for scenarios where bulk user data needs to be imported and processed efficiently.
+## Tech Stack
 
-## Features
-
-- **CSV Parsing**: Reads user data from a CSV file.
-- **Email Validation**: Ensures that only records with valid email addresses are inserted into the database.
-- **Name Formatting**: Automatically capitalizes the first letter of names and surnames.
-- **Dry Run Mode**: Allows you to simulate the upload process without modifying the database.
-- **Database Table Creation**: Automatically creates or rebuilds the users table in PostgreSQL if needed.
-- **Command-Line Interface**: Provides a command-line interface with multiple options for flexibility.
-
-## Prerequisites
-
-Before you can use the `user_upload.php` script, ensure you have the following:
-
-- **PHP**: Version 8.2.x or higher installed on your system.
-- **PostgreSQL**: Version 16.4 or higher installed and running.
+- **Programming Language**: PHP Version 8.2.x or higher installed on your system.
+- **Database**: PostgreSQL Version 16.4 or higher installed and running.
 - **CSV File**: A properly formatted CSV file containing user data.
+- **Dependency Management**: Composer
 
-## Error Handling
+### Dependencies
 
-The `user_upload.php` script includes basic error handling for database connection issues and missing command-line arguments. If the script encounters an error, it will display a message and exit with a non-zero status code.
+This project relies on PHP CodeSniffer for maintaining coding standards. PHP CodeSniffer is a tool that helps ensure code adheres to defined coding standards, making it easier to maintain consistency and quality across the codebase.
 
-Common error scenarios include:
+- **PHP CodeSniffer (`squizlabs/php_codesniffer`)**: A development dependency used to check the code against predefined coding standards and detect issues related to code formatting and style.
 
-- **Missing Database Extensions**: If the required PHP extensions for PostgreSQL (`pgsql` and `pdo_pgsql`) are not installed, the script will prompt you to install them.
+  - **Version**: `4.0.x-dev`
+  - **Purpose**: To enforce coding standards and automatically fix some common code style issues.
 
-- **Database Connection Failures**: If the connection to the PostgreSQL database fails due to incorrect credentials or other issues, the script will show an error message.
+The `require-dev` section of the `composer.json` file includes this dependency, which means it is only needed during development and is not required in the production environment.
 
-- **Invalid Command-Line Arguments**: If the script is run with missing or invalid arguments, it will show an error message and provide guidance on how to use the script correctly.
+### Composer Configuration
 
-## Database Connections
+The `composer.json` file includes the following configuration for PHP CodeSniffer:
 
-The script connects to a PostgreSQL database using PHP’s PDO extension. When establishing a connection, the script will:
+json
 
-1. **Prompt for Missing Details**: If necessary connection details (host, username, or password) are not provided via command-line arguments, the script will prompt you to enter them interactively.
+Copy code
 
-2. **Check for Required Extensions**: It verifies that the `pgsql` and `pdo_pgsql` extensions are installed and enabled.
+`"require-dev": {
+    "squizlabs/php_codesniffer": "4.0.x-dev"
+}`
 
-3. **Create PDO Instance**: It creates a PDO instance using the provided or default connection details and sets the error mode to `PDO::ERRMODE_EXCEPTION` to handle exceptions.
+This specifies that PHP CodeSniffer is a development dependency, allowing you to run code quality checks and ensure adherence to coding standards during the development process.
 
-## Database Table Creation
+## Design
 
-The script includes functionality to create or rebuild the 'users' table in the PostgreSQL database. When you run the script with the `--create_table` option, it will:
+This project operates as a command-line utility and does not include a graphical user interface. Below is an example of how to interact with the script through the terminal.
 
-1. **Check Table Existence**: It checks if the 'users' table already exists in the database.
-
-2. **Execute SQL Query**: If the table does not exist, it executes a SQL query to create the table with the following schema:
-
-   ```sql
-   CREATE TABLE IF NOT EXISTS users (
-       id SERIAL PRIMARY KEY,
-       name VARCHAR(255) NOT NULL,
-       surname VARCHAR(255) NOT NULL,
-       email VARCHAR(255) NOT NULL UNIQUE
-   );
-   ```
-
-# CSV Processing Script Documentation
-
-## Overview
-
-This documentation covers the functionality added to the CSV processing script, including CSV parsing, line counting, name capitalization, and email normalization. The script handles reading from a CSV file, validating and formatting data, and preparing it for further processing.
+<!-- Replace with actual GIF or image link -->
 
 ## Features
 
-### CSV Parsing
+- **CSV Parsing & Bulk Upload** : Import user data from a CSV file into a PostgreSQL database.
+- **Email Validation**: Validates email addresses and formats names.
+- **CSV File Validation**: Ensures the CSV file is properly formatted, encoded in UTF-8, and contains the correct number and type of columns.
+- **Name Formatting**: Automatically capitalizes the first letter of names and surnames.
+- **Database Table Creation**: Automatically creates or rebuilds the users table in PostgreSQL if needed.
+- **Dry Run Mode**: Allows you to simulate the upload process without modifying the database.
+- **Command-Line Options**: Provides a command-line interface with multiple options for flexibility.
 
-- **Functionality**: The script parses CSV files to read user data.
-- **Details**: Each row of the CSV file is read and processed to extract user information.
-- **File Handling**: Handles file operations with improved error checking and validation.
+## How to Run the Project
 
-### Line Counting
+### Prerequisites
 
-- **Functionality**: The script includes a function to count the number of lines in a CSV file.
-- **Purpose**: Helps determine the size of the file and manage processing efficiently.
+- **PHP 8.2.7** or higher
+- **PostgreSQL** database
+- **Composer** for managing dependencies
 
-### Name and Email Formatting
+### Setup
 
-- **Name Capitalization**: Names are capitalized before processing:
-  - **Example**: Converts 'john' to 'John'.
-- **Email Normalization**: Email addresses are converted to lowercase before processing:
-  - **Example**: Converts 'JOHN@EXAMPLE.COM' to 'john@example.com'.
+1.  **Clone the Repository**
+
+        bash
+
+        Copy code
+
+        `git clone https://github.com/ndegwamoche/php-csv-processor.git
+
+    cd php-csv-processor`
+
+2.  **Install Dependencies**
+
+    Ensure you have Composer installed, then run:
+
+    bash
+
+    Copy code
+
+    `composer install`
+
+3.  **Configure Database Connection**
+
+    Database credentials can be specified via command-line options when running the script.
+
+### Usage
+
+Here are the common commands for using the `user_upload.php` script:
+
+- **Show Help**
+
+  bash
+
+  Copy code
+
+  `php user_upload.php --help`
+
+  Displays available commands and options.
+
+- **Create or Rebuild Table**
+
+  bash
+
+  Copy code
+
+  `php user_upload.php --create_table`
+
+  Creates or rebuilds the `users` table. Optionally provide credentials:
+
+  bash
+
+  Copy code
+
+  `php user_upload.php --create_table -u username -p password -h hostname`
+
+- **Upload User Data**
+
+  bash
+
+  Copy code
+
+  `php user_upload.php --file users.csv`
+
+  Uploads data from `users.csv` into the database. Optionally provide credentials:
+
+  bash
+
+  Copy code
+
+  `php user_upload.php --file users.csv -u username -p password -h hostname`
+
+- **Dry Run**
+
+  bash
+
+  Copy code
+
+  `php user_upload.php --dry_run`
+
+  Simulates the upload process without actual changes. Optionally specify a CSV file:
+
+  bash
+
+  Copy code
+
+  `php user_upload.php --dry_run --file users.csv`
+
+### Example Commands
+
+1.  **Create the Table**
+
+    bash
+
+    Copy code
+
+    `php user_upload.php --create_table -u myuser -p mypass -h localhost`
+
+2.  **Upload Data**
+
+    bash
+
+    Copy code
+
+    `php user_upload.php --file mydata.csv -u myuser -p mypass -h localhost`
+
+3.  **Dry Run Upload**
+
+    bash
+
+    Copy code
+
+    `php user_upload.php --dry_run --file mydata.csv`
 
 ## Functions
 
-### `processCSVFile()`
+### `run()`
 
-- **Purpose**: Parses the CSV file, validates, and formats user data.
-- **Steps**:
-  1.  Checks if the file argument is provided.
-  2.  Opens and reads the CSV file.
-  3.  Skips the header row.
-  4.  Processes each row:
-      - Capitalizes names.
-      - Converts emails to lowercase.
-  5.  Displays processed data or performs a dry run based on the `--dry_run` flag.
+**Main function to execute the script based on the parsed arguments.**
+
+- **Description**: This method handles the overall execution of the script. It checks the provided command-line arguments and performs actions such as creating the database table, processing the CSV file, or running in dry mode. It ensures that the necessary actions are taken based on user input.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `` // The `run` method is automatically called based on the command-line arguments. ``
 
 ### `countLines($filename)`
 
-- **Purpose**: Counts the total number of lines in a CSV file.
+**Counts the number of lines in a specified file.**
+
 - **Parameters**:
-  - `$filename` (string): The path to the CSV file.
-- **Returns**: Integer value representing the number of lines in the file.
+  - `string $filename`: The name of the file to count lines in.
+- **Returns**: `int` - The total number of lines in the file.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `$lineCount = countLines('path/to/file.csv');`
+
+### `validateEmail($email)`
+
+**Validates the format of an email address.**
+
+- **Parameters**:
+  - `string $email`: Email address to validate.
+- **Returns**: `bool` - `true` if the email is valid, `false` otherwise.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `$isValid = validateEmail('test@example.com');`
+
+### `displayProgress($processedLines, $totalLines, $complete = false)`
+
+**Displays a progress bar in the command line to indicate processing status.**
+
+- **Parameters**:
+  - `int $processedLines`: The number of lines processed so far.
+  - `int $totalLines`: The total number of lines to process.
+  - `bool $complete`: Optional parameter to indicate if the processing is complete.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `displayProgress(50, 100);
+displayProgress(100, 100, true);`
 
 ### `isValidCsvFile($filename)`
 
-- **Purpose**: Validates if a CSV file is valid and meets the required criteria.
+**Validates if the given file is a proper CSV file.**
+
+- **Description**: This function checks several criteria to confirm the file's validity, including existence, readability, file extension, MIME type, and consistent column count across rows.
 - **Parameters**:
-  - `$filename` (string): The path to the CSV file.
-- **Returns**: Boolean value indicating if the file is valid.
+  - `string $filename`: The path to the file to be validated.
+- **Returns**: `bool` - `true` if the file is a valid CSV, `false` otherwise.
+- **Usage**:
 
-To ensure that only valid CSV files are processed, the script includes a method for validating CSV files. This method checks the following:
+  php
 
-- **File Existence and Readability:** Confirms the file exists and is readable.
-- **File Extension:** Ensures the file has a `.csv` extension.
-- **MIME Type:** Verifies the file's MIME type to ensure it's a CSV file.
-- **File Structure:** Checks for consistent column counts and ensures the file contains rows.
+  Copy code
 
-**How to Use:**
+  `$isValid = isValidCsvFile('path/to/file.csv');`
 
-Before processing a CSV file, call the `isValidCsvFile` method to validate it. This method will help to avoid errors by confirming the file meets the required criteria.
+### `insertUsers(array $users, array &$errors)`
 
-### `insertUsers(array $users)`
+**Inserts multiple user records into the database.**
 
-The insertUsers function is responsible for inserting multiple user records into the database. It accepts an array of user data and processes each record individually.
-
-- **Purpose**: Inserts multiple user records into the database.
 - **Parameters**:
-  - `$users` (array): An array of associative arrays, each containing 'name', 'surname', and 'email' keys for the user record.
+  - `array $users`: An array of associative arrays, each containing 'name', 'surname', and 'email' keys for user records.
+  - `array &$errors`: An array that will be populated with errors encountered during insertion.
+- **Usage**:
 
-#### Parameters
+  php
 
-- **$users**: An array of associative arrays, where each associative array represents a user. Each user array should include the following keys:
-- **name**: The first name of the user.
-- **surname**: The last name of the user.
-- **email**: The email address of the user.
+  Copy code
 
-#### Functionality:
+  `insertUsers($userRecords, $errors);`
 
-The `insertUsers` function loops through each user in the provided array and inserts the user record into the database. If an error occurs during the insertion of a specific record, the function will log the error and continue processing the remaining records.
+### `processCSVFile()`
 
-#### Example Usage:
+**Processes a CSV file and inserts valid user records into the database.**
 
-php
+- **Description**: This method handles reading and validating the CSV file, processing each row, and inserting valid user records into the database. It also displays appropriate messages for invalid data.
+- **Usage**:
 
-Copy code
+  php
 
-```sql
-`$users = [
-['name' => 'John', 'surname' => 'Doe', 'email' => 'john.doe@example.com'],
-['name' => 'Jane', 'surname' => 'Smith', 'email' => 'jane.smith@example.com']
-];
-```
+  Copy code
 
-$this->insertUsers($users);`
+  `processCSVFile();`
 
-In this example, the `insertUsers` function will attempt to insert each user into the database, logging any errors that occur and continuing with the next user.
+### `createTable()`
+
+**Creates the PostgreSQL users table.**
+
+- **Description**: This method creates a 'users' table in the PostgreSQL database with columns for ID, name, surname, and email. The email column must be unique.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `createTable();`
+
+### `printError($message)`
+
+**Prints error messages in red.**
+
+- **Parameters**:
+  - `string $message`: Message to display.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `printError("An error occurred.");`
+
+### `printInfo($message)`
+
+**Prints informational messages in green.**
+
+- **Parameters**:
+  - `string $message`: Message to display.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `printInfo("Process completed successfully.");`
+
+### `printHelp()`
+
+**Displays help information about how to use the script.**
+
+- **Description**: This method provides information on how to use the script, including available commands and options.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `printHelp();`
+
+### `prompt($message, $default = '')`
+
+**Prompts the user for input and returns the entered value.**
+
+- **Parameters**:
+  - `string $message`: The message to display to the user.
+  - `string $default`: The default value to return if no input is provided.
+- **Returns**: `string` - The user's input or the default value if no input is provided.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `$input = prompt("Enter your name:", "John Doe");`
+
+### `connectDatabase()`
+
+**Establishes a connection to the PostgreSQL database using PDO.**
+
+- **Description**: This method creates a PDO connection to the PostgreSQL database, enabling interaction with the database for operations such as table creation and data insertion.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `connectDatabase();`
+
+### `parseArguments($argv)`
+
+**Parses command-line arguments.**
+
+- **Parameters**:
+  - `array $argv`: Command-line arguments.
+- **Returns**: `array` - Parsed arguments.
+- **Usage**:
+
+  php
+
+  Copy code
+
+  `$args = parseArguments($argv);`
 
 ## Error Handling
 
-- **File Errors**: Provides descriptive messages if the file cannot be opened or if the file argument is missing.
-- **Email Validation**: Checks and reports invalid email formats.
+The PHP CSV Processor script includes several mechanisms for error handling to ensure smooth execution and provide clear feedback when issues arise. Here’s an overview of how errors are managed within the script:
 
-### Email Validation
+### Error Messages
 
-The `UserUpload` script now includes an email validation feature to ensure that only valid email addresses are processed and inserted into the PostgreSQL database. The validation is handled by the `validateEmail` method, which uses PHP's `filter_var()` function with the `FILTER_VALIDATE_EMAIL` filter.
+- **Error Printing**: Error messages are printed in red to distinguish them from other types of output. This helps in quickly identifying problems when running the script from the command line.
 
-#### How It Works
+  php
 
-Before inserting user data into the database, the script checks each email address using the `validateEmail` method. If an email address does not pass the validation, it will be excluded from the insertion process, ensuring that only properly formatted email addresses are stored.
+  Copy code
 
-#### Benefits
+  `private function printError($message) {
+    // Print error messages in red
+    echo "\033[31m$message\033[0m\n";
+}`
 
-- **Data Integrity**: Prevents invalid email addresses from being stored in the database.
-- **Improved Data Quality**: Ensures that only valid and usable email addresses are inserted.
+- **Informational Messages**: Informational messages are printed in green to provide feedback on the progress and status of the script.
 
-This feature is particularly useful in scenarios where clean and reliable user data is essential for the operation of the system, such as in email marketing or user authentication systems.
+  php
 
-# Code Style and Standards
+  Copy code
 
-## PHP CodeSniffer
+  `private function printInfo($message) {
+    // Print informational messages in green
+    echo "\033[32m$message\033[0m\n";
+}`
 
-This project uses [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) to enforce PSR-12 coding standards, ensuring consistent code style across the project.
+### Input Validation
 
-## Installation
+- **Command-Line Arguments**: The script checks if the necessary command-line arguments are provided. If not, it displays an error message and prints the help information. This ensures that users know how to properly run the script.
 
-If you already have Composer installed and a `composer.json` file set up in your project, you can install all the required dependencies, including PHP CodeSniffer, by running:
+  php
 
-bash
+  Copy code
 
-Copy code
+  `if (empty($this->args)) {
+    $this->printError("Please enter a command to start.\nPlease use the options below to run the script.");
+    $this->printHelp();
+    exit(1);
+}`
 
-`composer install`
+### File Validation
 
-This command will install PHP CodeSniffer as a dev dependency, along with any other dependencies specified in your `composer.json`.
+- **CSV File Validation**: The script validates the CSV file to ensure it meets several criteria:
 
-## Usage
+  - The file exists and is readable.
+  - The file has a `.csv` extension.
+  - The MIME type of the file matches that of a CSV file.
+  - The file is parsed to verify consistent column count across rows.
 
-You can use PHP CodeSniffer to check your code for style violations and to automatically fix issues.
+  If the file does not meet these criteria, the script will output an error message and halt further processing.
 
-### Checking Code Style
+  php
 
-To check your code for coding standard violations, run:
+  Copy code
 
-bash
+  `private function isValidCsvFile($filename) {
+    // Validate CSV file
+    if (!file_exists($filename)) {
+        $this->printError("File does not exist.");
+        return false;
+    }
+    if (!is_readable($filename)) {
+        $this->printError("File is not readable.");
+        return false;
+    }
+    if (pathinfo($filename, PATHINFO_EXTENSION) !== 'csv') {
+        $this->printError("File is not a CSV.");
+        return false;
+    }
+    // Additional validation logic
+    return true;
+}`
 
-Copy code
+### Database Operations
 
-`vendor/bin/phpcs --standard=PSR12 user_upload.php`
+- **Database Connection**: The script establishes a connection to the PostgreSQL database. If connection fails, an error message is printed.
 
-### Fixing Code Style Issues
+  php
 
-To automatically fix fixable coding standard violations, run:
+  Copy code
 
-bash
+  `private function connectDatabase() {
+    try {
+        // Database connection logic
+    } catch (PDOException $e) {
+        $this->printError("Database connection failed: " . $e->getMessage());
+        exit(1);
+    }
+}`
 
-Copy code
+- **Record Insertion**: Errors during the insertion of user records into the database are handled individually. The script logs errors for specific records, allowing the remaining records to be processed.
 
-`vendor/bin/phpcbf --standard=PSR12 user_upload.php`
+  php
 
-## Integration and Automation
+  Copy code
 
-### Git Hooks
+  `private function insertUsers(array $users, array &$errors) {
+    foreach ($users as $user) {
+        try {
+            // Insert user record
+        } catch (Exception $e) {
+            $errors[] = "Failed to insert user: " . $e->getMessage();
+        }
+    }
+}`
 
-To enforce coding standards before committing, you can add PHP CodeSniffer to your Git hooks:
+### Dry Run Mode
 
-1.  Create or edit the `.git/hooks/pre-commit` file:
+- **Dry Run Mode**: When running in dry-run mode, the script performs a simulated execution without making any changes to the database. This is useful for verifying the results before actual execution.
 
-        bash
+  php
 
-        Copy code
+  Copy code
 
-        `#!/bin/sh
+  `if (isset($this->args['dry_run'])) {
+    $this->printInfo("Dry run mode enabled. No changes will be made to the database.");
+    $this->processCSVFile();
+}`
 
-    vendor/bin/phpcs --standard=PSR12 user_upload.php`
+## About the Author
 
-2.  Make the pre-commit file executable:
+**Martin Ndegwa Moche**
 
-    bash
+I am a WordPress PHP Developer with a passion for building robust and efficient web applications. If you have any questions or would like to connect, feel free to reach out!
 
-    Copy code
-
-    `chmod +x .git/hooks/pre-commit`
-
-# **Windows: Enabling PostgreSQL Extensions for PHP**
-
-### **Step 1: Verify PHP Installation**
-
-1.  Make sure PHP is installed on your system. You can verify by running the following command in Command Prompt or PowerShell:
-
-    bash
-
-    Copy code
-
-    `php -v`
-
-2.  Confirm the version and installation path of PHP.
-
-### **Step 2: Locate `php.ini` File**
-
-1.  Find the `php.ini` file, typically located in the PHP installation directory (e.g., `C:\php`, `C:\Program Files\PHP\`, or `C:\xampp\php\`).
-2.  If you have multiple PHP installations, ensure you're editing the correct `php.ini` file used by your web server or CLI.
-
-### **Step 3: Enable PostgreSQL Extensions**
-
-1.  Open the `php.ini` file in a text editor (e.g., Notepad, Notepad++, or VS Code).
-2.  Search for the following lines:
-
-        ini
-
-        Copy code
-
-        `;extension=pgsql
-
-    ;extension=pdo_pgsql`
-
-3.  Uncomment these lines by removing the semicolons (`;`) at the beginning:
-
-        ini
-
-        Copy code
-
-        `extension=pgsql
-
-    extension=pdo_pgsql`
-
-4.  Save the `php.ini` file.
-
-### **Step 4: Restart Web Server (If Applicable)**
-
-1.  If you're using a web server like Apache or Nginx, restart it to apply the changes.
-
-    - For Apache, you can restart it using the following command in Command Prompt:
-
-      bash
-
-      Copy code
-
-      `httpd -k restart`
-
-    - If using XAMPP, restart Apache from the XAMPP Control Panel.
-
-### **Step 5: Verify Installation**
-
-1.  Create a `phpinfo.php` file in your web server's root directory with the following content:
-
-    php
-
-    Copy code
-
-    `<?php phpinfo(); ?>`
-
-2.  Access this file from your web browser (e.g., `http://localhost/phpinfo.php`) and search for "pgsql" and "pdo_pgsql" to ensure the extensions are enabled.
-
-# **Unix/Linux: Installing and Enabling PostgreSQL Extensions for PHP**
-
-### **Step 1: Install PostgreSQL and PHP**
-
-1.  Ensure that both PostgreSQL and PHP are installed. You can verify using the following commands:
-
-        bash
-
-        Copy code
-
-        `php -v
-
-    psql --version`
-
-2.  If they are not installed, install them using your package manager. For example, on Ubuntu:
-
-        bash
-
-        Copy code
-
-        `sudo apt update
-
-    sudo apt install php postgresql`
-
-### **Step 2: Install PHP PostgreSQL Extensions**
-
-1.  Install the necessary PHP PostgreSQL extensions using your package manager. On Ubuntu or Debian-based systems:
-
-    bash
-
-    Copy code
-
-    `sudo apt-get install php-pgsql`
-
-    On Red Hat or CentOS:
-
-    bash
-
-    Copy code
-
-    `sudo yum install php-pgsql`
-
-### **Step 3: Locate and Edit `php.ini` File**
-
-1.  Find the `php.ini` file, usually located in `/etc/php/{version}/cli/php.ini` or `/etc/php/{version}/apache2/php.ini`.
-2.  Open it in a text editor:
-
-    bash
-
-    Copy code
-
-    `sudo nano /etc/php/{version}/cli/php.ini`
-
-### **Step 4: Enable Extensions**
-
-1.  Ensure that the following lines are present and uncommented in the `php.ini` file:
-
-        ini
-
-        Copy code
-
-        `extension=pgsql.so
-
-    extension=pdo_pgsql.so`
-
-### **Step 5: Restart Web Server**
-
-1.  Restart your web server to apply changes:
-
-    bash
-
-    Copy code
-
-    `sudo systemctl restart apache2`
-
-    Or for Nginx:
-
-    bash
-
-    Copy code
-
-    `sudo systemctl restart nginx`
-
-### **Step 6: Verify Installation**
-
-1.  Create a `phpinfo.php` file in your web server’s root directory:
-
-    bash
-
-    Copy code
-
-    `echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/phpinfo.php`
-
-2.  Open this file in a web browser (`http://your-server-ip/phpinfo.php`) and search for "pgsql" and "pdo_pgsql" to verify the extensions are enabled.
-
-## **Common Troubleshooting Steps**
-
-- **Missing Extensions:** Ensure that the PHP extensions are correctly installed. If not, try reinstalling PHP and the extensions.
-- **Incorrect `php.ini` File:** Ensure you’re editing the correct `php.ini` file by checking the output of `phpinfo()`.
-
-Following these steps will help you enable PostgreSQL support in PHP on both Windows and Unix-based systems.
+- **LinkedIn**: [Martin Ndegwa Moche](https://www.linkedin.com/in/ndegwamoche/)
+- **Email**: ndegwamoche@gmail.com

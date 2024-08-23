@@ -171,7 +171,7 @@ class UserUpload
     {
         $this->printInfo(str_repeat('*', 100));
         $this->printInfo(self::RESET . str_repeat('*', 23) .
-            "                UserUpload Script Help                " .
+            "                PHP CSV Processor Help                " .
             str_repeat('*', 23));
         $this->printInfo(str_repeat('*', 100));
         $this->printInfo("");
