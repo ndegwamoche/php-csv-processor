@@ -106,9 +106,8 @@ This project operates as a command-line utility and does not include a graphical
 
     Ensure you have Composer installed, then run:
 
-    <pre><code>
+    ```bash
     composer install
-    </code></pre>
     
 4.  **Configure Database Connection**
 
@@ -120,24 +119,21 @@ Here are the common commands for using the `user_upload.php` script:
 
 - **Show Help**
 
-  <pre><code>
+  ```bash
   php user_upload.php --help
-  </code></pre>
-  
-  Displays available commands and options.
+
+Displays available commands and options.
 
 - **Create or Rebuild Table**
 
-  <pre><code>
+  ```bash
   php user_upload.php --create_table
-  </code></pre>
   
-  Creates or rebuilds the `users` table. Optionally provide credentials:
+Creates or rebuilds the `users` table. Optionally provide credentials:
 
-  <pre><code>
+  ```bash
   php user_upload.php --create_table -u username -p password -h hostname
-  </code></pre>
-  
+
 - **Upload User Data**
 
   <pre><code>
