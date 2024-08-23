@@ -284,6 +284,7 @@ class UserUpload
         $users = []; // Array to store user records
         $totalLines = $this->countLines($fileName); // Get the total number of lines in the file
         $processedLines = 0; // Counter for processed lines
+        $errors = []; // Array to store error messages
         $dryRun = isset($this->args['dry_run']); // Check if dry run is enabled
 
         // Process each row in the CSV file
@@ -303,19 +304,17 @@ class UserUpload
                 // Add valid user record to the array
                 $users[] = ['name' => $name, 'surname' => $surname, 'email' => $email];
 
-                // Output validated emails
-                echo "Name: $name Surname: $surname Email: $email" . PHP_EOL;
-
                 $processedLines++;
+                $this->displayProgress($processedLines, $totalLines);
             } else {
                 // Output invalid email format message
-                if (empty($email)) {
-                    $this->printError("Failed: $name $surname $email " . self::YELLOW .
-                        "Empty email" . self::RESET . PHP_EOL);
-                } else {
-                    $this->printError("Failed: $name $surname $email " . self::YELLOW .
-                        "Invalid email format" . self::RESET . PHP_EOL);
-                }
+                $error = empty($email) ? "Empty email" : "Invalid email format";
+                $errors[] = [
+                    'name' => $name,
+                    'surname' => $surname,
+                    'email' => $email,
+                    'error' => $error,
+                ];
             }
         }
 
@@ -323,16 +322,27 @@ class UserUpload
 
         // If not a dry run, insert valid users into the database
         if (!$dryRun && !empty($users)) {
-            $this->insertUsers($users);
+            $this->insertUsers($users, $errors);
+        }
+
+        // Print errors if any
+        if (!empty($errors)) {
+            $this->printInfo(self::YELLOW . "\nErrors encountered:\n" . self::RESET);
+            foreach ($errors as $error) {
+                $this->printError("Name: {$error['name']} {$error['surname']} | Email: {$error['email']} | " . self::RESET . " Error: {$error['error']}\n");
+            }
         }
 
         // Output the total and processed line counts
-        echo "Total lines: $totalLines Processed lines: $processedLines" . PHP_EOL;
+        $this->printInfo("Total lines: $totalLines | Processed lines: $processedLines | Errors: " . count($errors) . PHP_EOL);
 
         // Notify if it's a dry run
         if ($dryRun) {
             $this->printInfo("Dry run completed: No data was inserted into the database." . PHP_EOL);
         }
+
+        // Complete progress bar
+        //$this->displayProgress($totalLines, $totalLines, true);
     }
     /**
      * Inserts multiple user records into the database.
@@ -344,7 +354,7 @@ class UserUpload
      * @param array $users An array of associative arrays, each containing 'name',
      *                     'surname', and 'email' keys for the user record.
      */
-    private function insertUsers(array $users)
+    private function insertUsers(array $users, array &$errors)
     {
         // Prepare the SQL statement for inserting a user
         $stmt = $this->pdo->prepare("INSERT INTO users (name, surname, email) VALUES (:name, :surname, :email)");
@@ -358,12 +368,17 @@ class UserUpload
                     ':email' => $user['email']
                 ]);
             } catch (\PDOException $e) {
-                // Handle the error for this specific user
-                $this->printError("Failed: " . $user['name'] . " " . $user['surname'] . " 
-                " . $user['email'] . " " . self::RESET . $e->getMessage());
+                // Handle the error for this specific user and add it to the errors array
+                $errors[] = [
+                    'name' => $user['name'],
+                    'surname' => $user['surname'],
+                    'email' => $user['email'],
+                    'error' => $e->getMessage()
+                ];
             }
         }
     }
+
 
     /**
      * Validate if the given file is a valid CSV file.
@@ -418,6 +433,33 @@ class UserUpload
         return false;
     }
 
+    /**
+     * Displays a progress bar in the command line.
+     *
+     * @param int $processedLines The number of lines processed
+     * @param int $totalLines The total number of lines
+     * @param bool $complete Optional parameter to indicate completion
+     * @return void
+     */
+    private function displayProgress($processedLines, $totalLines, $complete = false)
+    {
+
+        // Calculate the progress percentage
+        $progress = $totalLines > 0 ? ($processedLines / $totalLines) * 100 : 0;
+
+        // Create a progress bar
+        $barLength = 50; // Length of the progress bar
+        $filledLength = (int)($progress / 100 * $barLength);
+        $bar = str_repeat('=', $filledLength) . str_repeat('-', $barLength - $filledLength);
+
+        // Output the progress bar
+        $status = $complete ? 'Completed' : sprintf('Processing: %d%%', $progress);
+        echo sprintf("\r[%s] %s", $bar, $status);
+
+        if ($complete) {
+            echo PHP_EOL; // Newline for completion
+        }
+    }
 
     /**
      * Validate email address format.
