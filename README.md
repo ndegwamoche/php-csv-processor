@@ -150,7 +150,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```bash
   php user_upload.php --dry_run
-```
+    ```
   
   Simulates the upload process without actual changes. Optionally specify a CSV file:
 
