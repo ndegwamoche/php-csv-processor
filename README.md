@@ -36,10 +36,16 @@
     1.  [Error Messages](#error-messages)
     2.  [Input Validation](#input-validation)
     3.  [File Validation](#file-validation)
+    4.  [Database Operations](#database-operations)
+    5.  [Dry Run Mode](#dry-run-mode)
+5.  [Project Wrap-Up](#project-wrap-up)
+6.  [About the Author](#about-the-author)
 
 ## Description
 
-The **PHP CSV Processor** is a command-line script designed for bulk importing user data from CSV files into a PostgreSQL database. This tool streamlines user record management by automating data validation, formatting, and database operations. It offers various command-line options for managing database schemas and performing data uploads, making it a versatile solution for database administrators and developers.
+The **PHP CSV Processor** is a command-line script designed for bulk importing user data from CSV files into a PostgreSQL database. This tool streamlines user record management by automating data validation, formatting, and database operations. 
+
+It offers various command-line options for managing database schemas and performing data uploads, making it a versatile solution for database administrators and developers.
 
 ## Tech Stack
 
