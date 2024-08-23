@@ -101,14 +101,14 @@ This project operates as a command-line utility and does not include a graphical
     ```bash
     git clone https://github.com/ndegwamoche/php-csv-processor.git
     cd php-csv-processor
-    
+    ```
 3.  **Install Dependencies**
 
     Ensure you have Composer installed, then run:
 
     ```bash
     composer install
-    
+    ```
 4.  **Configure Database Connection**
 
     Database credentials can be specified via command-line options when running the script.
@@ -121,62 +121,62 @@ Here are the common commands for using the `user_upload.php` script:
 
   ```bash
   php user_upload.php --help
-
-Displays available commands and options.
+  ```  
+  Displays available commands and options.
 
 - **Create or Rebuild Table**
 
   ```bash
   php user_upload.php --create_table
-  
+  ```
 Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```bash
   php user_upload.php --create_table -u username -p password -h hostname
-
+  ```  
 - **Upload User Data**
 
-  <pre><code>
+  ```bash
   php user_upload.php --file users.csv
-  </code></pre>
+  ```
   
   Uploads data from `users.csv` into the database. Optionally provide credentials:
 
-  <pre><code>
+  ```bash
   php user_upload.php --file users.csv -u username -p password -h hostname
-  </code></pre>
+  ```
   
 - **Dry Run**
 
-  <pre><code>
+  ```bash
   php user_upload.php --dry_run
-  </code></pre>
+  ```
   
   Simulates the upload process without actual changes. Optionally specify a CSV file:
 
-  <pre><code>
+  ```bash
   php user_upload.php --dry_run --file users.csv
-  </code></pre> 
+  ``` 
    
 ### Example Commands
 
 1.  **Create the Table**
 
-   <pre><code>
+       ```bash
     php user_upload.php --create_table -u myuser -p mypass -h localhost
-    </code></pre> 
+    ``` 
     
 2.  **Upload Data**
 
-   <pre><code>
+     ```bash
     php user_upload.php --file mydata.csv -u myuser -p mypass -h localhost
-    </code></pre> 
+    ``` 
     
 3.  **Dry Run Upload**
 
-    <pre><code>
+     ```bash
     php user_upload.php --dry_run --file mydata.csv
-    </code></pre> 
+    ``` 
     
 ## Functions
 
@@ -187,12 +187,10 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 - **Description**: This method handles the overall execution of the script. It checks the provided command-line arguments and performs actions such as creating the database table, processing the CSV file, or running in dry mode. It ensures that the necessary actions are taken based on user input.
 - **Usage**:
 
-  php
+  ```php
 
-  Copy code
-
-  `` // The `run` method is automatically called based on the command-line arguments. ``
-
+  // The `run` method is automatically called based on the command-line arguments.
+  ```    
 ### `countLines($filename)`
 
 **Counts the number of lines in a specified file.**
