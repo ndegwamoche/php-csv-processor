@@ -64,10 +64,9 @@ The `require-dev` section of the `composer.json` file includes this dependency, 
 The `composer.json` file includes the following configuration for PHP CodeSniffer:
 
 ```json
-
-`"require-dev": {
+"require-dev": {
     "squizlabs/php_codesniffer": "4.0.x-dev"
-}`
+}
 ```
 
 This specifies that PHP CodeSniffer is a development dependency, allowing you to run code quality checks and ensure adherence to coding standards during the development process.
