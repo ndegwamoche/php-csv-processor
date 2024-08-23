@@ -1,5 +1,42 @@
 # PHP CSV Processor
 
+## Table of Contents
+
+1.  [PHP CSV Processor](#php-csv-processor)
+    1.  [Description](#description)
+    2.  [Tech Stack](#tech-stack)
+        1.  [Dependencies](#dependencies)
+        2.  [Composer Configuration](#composer-configuration)
+    3.  [Design](#design)
+    4.  [Features](#features)
+2.  [How to Run the Project](#how-to-run-the-project)
+    1.  [Prerequisites](#prerequisites)
+    2.  [Setup](#setup)
+        1.  [Clone the Repository](#clone-the-repository)
+        2.  [Install Dependencies](#install-dependencies)
+        3.  [Configure Database Connection](#configure-database-connection)
+    3.  [Usage](#usage)
+    4.  [Example Commands](#example-commands)
+3.  [Functions](#functions)
+    1.  [run()](#run)
+    2.  [countLines()](#countlines)
+    3.  [validateEmail()](#validateemail)
+    4.  [displayProgress()](#displayprogress)
+    5.  [isValidCsvFile()](#isvalidcsvfile)
+    6.  [insertUsers()](#insertusers)
+    7.  [processCSVFile()](#processcsvfile)
+    8.  [createTable()](#createtable)
+    9.  [printError()](#printerror)
+    10. [printInfo()](#printinfo)
+    11. [printHelp()](#printhelp)
+    12. [prompt()](#prompt)
+    13. [connectDatabase()](#connectdatabase)
+    14. [parseArguments()](#parsearguments)
+4.  [Error Handling](#error-handling)
+    1.  [Error Messages](#error-messages)
+    2.  [Input Validation](#input-validation)
+    3.  [File Validation](#file-validation)
+
 ## Description
 
 The **PHP CSV Processor** is a command-line script designed for bulk importing user data from CSV files into a PostgreSQL database. This tool streamlines user record management by automating data validation, formatting, and database operations. It offers various command-line options for managing database schemas and performing data uploads, making it a versatile solution for database administrators and developers.
