@@ -101,14 +101,14 @@ This project operates as a command-line utility and does not include a graphical
     ```bash
     git clone https://github.com/ndegwamoche/php-csv-processor.git
     cd php-csv-processor
-        ```
+    ```
 3.  **Install Dependencies**
 
     Ensure you have Composer installed, then run:
 
     ```bash
     composer install
-        ```
+    ```
 4.  **Configure Database Connection**
 
     Database credentials can be specified via command-line options when running the script.
@@ -121,36 +121,36 @@ Here are the common commands for using the `user_upload.php` script:
 
   ```bash
   php user_upload.php --help
-      ```  
+  ```  
   Displays available commands and options.
 
 - **Create or Rebuild Table**
 
   ```bash
   php user_upload.php --create_table
-      ```
+  ```
 Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```bash
   php user_upload.php --create_table -u username -p password -h hostname
-      ```  
+  ```  
 - **Upload User Data**
 
   ```bash
   php user_upload.php --file users.csv
-      ```
+   ```
   
   Uploads data from `users.csv` into the database. Optionally provide credentials:
 
   ```bash
   php user_upload.php --file users.csv -u username -p password -h hostname
-      ```
+  ```
   
 - **Dry Run**
 
   ```bash
   php user_upload.php --dry_run
-      ```
+```
   
   Simulates the upload process without actual changes. Optionally specify a CSV file:
 
@@ -170,13 +170,13 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
      ```bash
     php user_upload.php --file mydata.csv -u myuser -p mypass -h localhost
-        ``` 
+     ``` 
     
 3.  **Dry Run Upload**
 
      ```bash
     php user_upload.php --dry_run --file mydata.csv
-        ``` 
+     ``` 
     
 ## Functions
 
@@ -190,7 +190,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
   ```php
 
   // The `run` method is automatically called based on the command-line arguments.
-      ```    
+  ```    
 ### `countLines($filename)`
 
 **Counts the number of lines in a specified file.**
@@ -202,7 +202,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```php
   $lineCount = countLines('path/to/file.csv');
-      ```
+  ```
   
 ### `validateEmail($email)`
 
@@ -215,7 +215,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```php
   $isValid = validateEmail('test@example.com');
-      ```
+  ```
     
 ### `displayProgress($processedLines, $totalLines, $complete = false)`
 
@@ -230,7 +230,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
   ```php
   displayProgress(50, 100);
     displayProgress(100, 100, true);
-      ```
+  ```
     
 ### `isValidCsvFile($filename)`
 
@@ -244,9 +244,9 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```php
   $isValid = isValidCsvFile('path/to/file.csv');
-        ```
+  ```
   
-### `insertUsers(array $users, array &$errors)`
+### `(array $users, array &$errors)`
 
 **Inserts multiple user records into the database.**
 
@@ -257,8 +257,8 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```php
   insertUsers($userRecords, $errors);
-       ```
-  
+  ```
+
 ### `processCSVFile()`
 
 **Processes a CSV file and inserts valid user records into the database.**
