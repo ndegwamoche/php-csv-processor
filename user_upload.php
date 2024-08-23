@@ -110,6 +110,11 @@ class UserUpload
      */
     private function connectDatabase()
     {
+        if (isset($this->args['dry_run'])) {
+            $this->printInfo("Dry run mode: Skipping database connection.");
+            return;
+        }
+
         // Prompt for missing connection details
         $host = $this->args['host'] ?? $this->prompt('Enter PostgreSQL host (default: localhost): ', 'localhost');
         $username = $this->args['username'] ?? $this->prompt('Enter PostgreSQL username: ');
