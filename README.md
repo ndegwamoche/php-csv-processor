@@ -19,19 +19,19 @@
     4.  [Example Commands](#example-commands)
 3.  [Functions](#functions)
     1.  [run()](#run)
-    2.  [countLines()](#countlines)
-    3.  [validateEmail()](#validateemail)
-    4.  [displayProgress()](#displayprogress)
-    5.  [isValidCsvFile()](#isvalidcsvfile)
-    6.  [insertUsers()](#insertusers)
+    2.  [countLines()](#countlinesfilename)
+    3.  [validateEmail()](#validateemailemail)
+    4.  [displayProgress()](#displayprogressprocessedlines-totallines-complete--false)
+    5.  [isValidCsvFile()](#isvalidcsvfilefilename)
+    6.  [insertUsers()](#insertusersarray-users-array-errors)
     7.  [processCSVFile()](#processcsvfile)
     8.  [createTable()](#createtable)
-    9.  [printError()](#printerror)
+    9.  [printError()](#printerrormessage)
     10. [printInfo()](#printinfo)
     11. [printHelp()](#printhelp)
-    12. [prompt()](#prompt)
+    12. [prompt()](#promptmessage-default--)
     13. [connectDatabase()](#connectdatabase)
-    14. [parseArguments()](#parsearguments)
+    14. [parseArguments()](#parseargumentsargv)
 4.  [Error Handling](#error-handling)
     1.  [Error Messages](#error-messages)
     2.  [Input Validation](#input-validation)
@@ -103,19 +103,19 @@ This project operates as a command-line utility and does not include a graphical
 
 ### Setup
 
-1.  **Clone the Repository**
+1.  #### **Clone the Repository**
     ```bash
     git clone https://github.com/ndegwamoche/php-csv-processor.git
     cd php-csv-processor
     ```
-3.  **Install Dependencies**
+3.  #### **Install Dependencies**
 
     Ensure you have Composer installed, then run:
 
     ```bash
     composer install
     ```
-4.  **Configure Database Connection**
+4.  #### **Configure Database Connection**
 
     Database credentials can be specified via command-line options when running the script.
 
@@ -123,14 +123,14 @@ This project operates as a command-line utility and does not include a graphical
 
 Here are the common commands for using the `user_upload.php` script:
 
-- **Show Help**
+- #### **Show Help**
 
   ```bash
   php user_upload.php --help
   ```  
   Displays available commands and options.
 
-- **Create or Rebuild Table**
+- #### **Create or Rebuild Table**
 
   ```bash
   php user_upload.php --create_table
@@ -140,7 +140,7 @@ Here are the common commands for using the `user_upload.php` script:
   ```bash
   php user_upload.php --create_table -u username -p password -h hostname
   ```  
-- **Upload User Data**
+- #### **Upload User Data**
 
   ```bash
   php user_upload.php --file users.csv
@@ -152,7 +152,7 @@ Here are the common commands for using the `user_upload.php` script:
   php user_upload.php --file users.csv -u username -p password -h hostname
   ```
   
-- **Dry Run**
+- #### **Dry Run**
 
   ```bash
   php user_upload.php --dry_run
@@ -166,19 +166,19 @@ Here are the common commands for using the `user_upload.php` script:
    
 ### Example Commands
 
-1.  **Create the Table**
+1.  #### **Create the Table**
 
        ```bash
     php user_upload.php --create_table -u myuser -p mypass -h localhost
     ``` 
     
-2.  **Upload Data**
+2.  #### **Upload Data**
 
      ```bash
     php user_upload.php --file users.csv -u myuser -p mypass -h localhost
      ``` 
     
-3.  **Dry Run Upload**
+3.  #### **Dry Run Upload**
 
      ```bash
     php user_upload.php --dry_run --file users.csv
