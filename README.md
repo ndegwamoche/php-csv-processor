@@ -77,7 +77,7 @@ This specifies that PHP CodeSniffer is a development dependency, allowing you to
 
 This project operates as a command-line utility and does not include a graphical user interface. Below is an example of how to interact with the script through the terminal.
 
-![PHP CSV processor image file with a screenshot of the help section](https://raw.githubusercontent.com/ndegwamoche/php-csv-processor/main/php-csv-processor.png?token=GHSAT0AAAAAACRDK2AYUXS6JMBNFY56V4GEZWIRHEA)
+![PHP CSV processor image file with a screenshot of the help section](https://raw.githubusercontent.com/ndegwamoche/php-csv-processor/main/php-csv-processor.png)
 
 ## Features
 
