@@ -101,14 +101,14 @@ This project operates as a command-line utility and does not include a graphical
     ```bash
     git clone https://github.com/ndegwamoche/php-csv-processor.git
     cd php-csv-processor
-    ```
+        ```
 3.  **Install Dependencies**
 
     Ensure you have Composer installed, then run:
 
     ```bash
     composer install
-    ```
+        ```
 4.  **Configure Database Connection**
 
     Database credentials can be specified via command-line options when running the script.
@@ -121,36 +121,36 @@ Here are the common commands for using the `user_upload.php` script:
 
   ```bash
   php user_upload.php --help
-  ```  
+      ```  
   Displays available commands and options.
 
 - **Create or Rebuild Table**
 
   ```bash
   php user_upload.php --create_table
-  ```
+      ```
 Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```bash
   php user_upload.php --create_table -u username -p password -h hostname
-  ```  
+      ```  
 - **Upload User Data**
 
   ```bash
   php user_upload.php --file users.csv
-  ```
+      ```
   
   Uploads data from `users.csv` into the database. Optionally provide credentials:
 
   ```bash
   php user_upload.php --file users.csv -u username -p password -h hostname
-  ```
+      ```
   
 - **Dry Run**
 
   ```bash
   php user_upload.php --dry_run
-  ```
+      ```
   
   Simulates the upload process without actual changes. Optionally specify a CSV file:
 
@@ -170,13 +170,13 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
      ```bash
     php user_upload.php --file mydata.csv -u myuser -p mypass -h localhost
-    ``` 
+        ``` 
     
 3.  **Dry Run Upload**
 
      ```bash
     php user_upload.php --dry_run --file mydata.csv
-    ``` 
+        ``` 
     
 ## Functions
 
@@ -190,7 +190,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
   ```php
 
   // The `run` method is automatically called based on the command-line arguments.
-  ```    
+      ```    
 ### `countLines($filename)`
 
 **Counts the number of lines in a specified file.**
@@ -200,12 +200,10 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 - **Returns**: `int` - The total number of lines in the file.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `$lineCount = countLines('path/to/file.csv');`
-
+  ```php
+  $lineCount = countLines('path/to/file.csv');
+      ```
+  
 ### `validateEmail($email)`
 
 **Validates the format of an email address.**
@@ -215,12 +213,10 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 - **Returns**: `bool` - `true` if the email is valid, `false` otherwise.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `$isValid = validateEmail('test@example.com');`
-
+  ```php
+  $isValid = validateEmail('test@example.com');
+      ```
+    
 ### `displayProgress($processedLines, $totalLines, $complete = false)`
 
 **Displays a progress bar in the command line to indicate processing status.**
@@ -231,13 +227,11 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
   - `bool $complete`: Optional parameter to indicate if the processing is complete.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `displayProgress(50, 100);
-displayProgress(100, 100, true);`
-
+  ```php
+  displayProgress(50, 100);
+    displayProgress(100, 100, true);
+      ```
+    
 ### `isValidCsvFile($filename)`
 
 **Validates if the given file is a proper CSV file.**
@@ -248,12 +242,10 @@ displayProgress(100, 100, true);`
 - **Returns**: `bool` - `true` if the file is a valid CSV, `false` otherwise.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `$isValid = isValidCsvFile('path/to/file.csv');`
-
+  ```php
+  $isValid = isValidCsvFile('path/to/file.csv');
+        ```
+  
 ### `insertUsers(array $users, array &$errors)`
 
 **Inserts multiple user records into the database.**
@@ -263,12 +255,10 @@ displayProgress(100, 100, true);`
   - `array &$errors`: An array that will be populated with errors encountered during insertion.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `insertUsers($userRecords, $errors);`
-
+  ```php
+  insertUsers($userRecords, $errors);
+       ```
+  
 ### `processCSVFile()`
 
 **Processes a CSV file and inserts valid user records into the database.**
@@ -276,12 +266,9 @@ displayProgress(100, 100, true);`
 - **Description**: This method handles reading and validating the CSV file, processing each row, and inserting valid user records into the database. It also displays appropriate messages for invalid data.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `processCSVFile();`
-
+ ```php
+  processCSVFile();
+ ```
 ### `createTable()`
 
 **Creates the PostgreSQL users table.**
@@ -289,12 +276,10 @@ displayProgress(100, 100, true);`
 - **Description**: This method creates a 'users' table in the PostgreSQL database with columns for ID, name, surname, and email. The email column must be unique.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `createTable();`
-
+  ```php
+  createTable();
+     ```
+  
 ### `printError($message)`
 
 **Prints error messages in red.**
@@ -303,12 +288,9 @@ displayProgress(100, 100, true);`
   - `string $message`: Message to display.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `printError("An error occurred.");`
-
+  ```php
+  printError("An error occurred.");
+     ```
 ### `printInfo($message)`
 
 **Prints informational messages in green.**
@@ -317,12 +299,10 @@ displayProgress(100, 100, true);`
   - `string $message`: Message to display.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `printInfo("Process completed successfully.");`
-
+  ```php
+  printInfo("Process completed successfully.");
+     ```
+  
 ### `printHelp()`
 
 **Displays help information about how to use the script.**
@@ -330,11 +310,9 @@ displayProgress(100, 100, true);`
 - **Description**: This method provides information on how to use the script, including available commands and options.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `printHelp();`
+ ```php
+  printHelp();
+ ```
 
 ### `prompt($message, $default = '')`
 
@@ -346,11 +324,9 @@ displayProgress(100, 100, true);`
 - **Returns**: `string` - The user's input or the default value if no input is provided.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `$input = prompt("Enter your name:", "John Doe");`
+  ```php
+  $input = prompt("Enter your name:", "John Doe");
+  ```
 
 ### `connectDatabase()`
 
@@ -359,11 +335,9 @@ displayProgress(100, 100, true);`
 - **Description**: This method creates a PDO connection to the PostgreSQL database, enabling interaction with the database for operations such as table creation and data insertion.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `connectDatabase();`
+  ```php
+  connectDatabase();
+  ```
 
 ### `parseArguments($argv)`
 
@@ -374,11 +348,9 @@ displayProgress(100, 100, true);`
 - **Returns**: `array` - Parsed arguments.
 - **Usage**:
 
-  php
-
-  Copy code
-
-  `$args = parseArguments($argv);`
+   ```php
+  $args = parseArguments($argv);
+    ```
 
 ## Error Handling
 
@@ -388,39 +360,33 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
 
 - **Error Printing**: Error messages are printed in red to distinguish them from other types of output. This helps in quickly identifying problems when running the script from the command line.
 
-  php
-
-  Copy code
-
-  `private function printError($message) {
+  ```php
+  private function printError($message) {
     // Print error messages in red
     echo "\033[31m$message\033[0m\n";
-}`
+    }
+     ```
 
 - **Informational Messages**: Informational messages are printed in green to provide feedback on the progress and status of the script.
 
-  php
-
-  Copy code
-
+  ```php
   `private function printInfo($message) {
     // Print informational messages in green
     echo "\033[32m$message\033[0m\n";
-}`
+    }
+   ```
 
 ### Input Validation
 
 - **Command-Line Arguments**: The script checks if the necessary command-line arguments are provided. If not, it displays an error message and prints the help information. This ensures that users know how to properly run the script.
 
-  php
-
-  Copy code
-
-  `if (empty($this->args)) {
+ ```php
+  if (empty($this->args)) {
     $this->printError("Please enter a command to start.\nPlease use the options below to run the script.");
     $this->printHelp();
     exit(1);
-}`
+ }
+ ```
 
 ### File Validation
 
@@ -433,11 +399,8 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
 
   If the file does not meet these criteria, the script will output an error message and halt further processing.
 
-  php
-
-  Copy code
-
-  `private function isValidCsvFile($filename) {
+ ```php
+  private function isValidCsvFile($filename) {
     // Validate CSV file
     if (!file_exists($filename)) {
         $this->printError("File does not exist.");
@@ -453,32 +416,28 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
     }
     // Additional validation logic
     return true;
-}`
+}
+```
 
 ### Database Operations
 
 - **Database Connection**: The script establishes a connection to the PostgreSQL database. If connection fails, an error message is printed.
 
-  php
-
-  Copy code
-
-  `private function connectDatabase() {
+  ```php
+  private function connectDatabase() {
     try {
         // Database connection logic
     } catch (PDOException $e) {
         $this->printError("Database connection failed: " . $e->getMessage());
         exit(1);
     }
-}`
+    }
+  ```
 
 - **Record Insertion**: Errors during the insertion of user records into the database are handled individually. The script logs errors for specific records, allowing the remaining records to be processed.
 
-  php
-
-  Copy code
-
-  `private function insertUsers(array $users, array &$errors) {
+ ```php
+  private function insertUsers(array $users, array &$errors) {
     foreach ($users as $user) {
         try {
             // Insert user record
@@ -486,20 +445,19 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
             $errors[] = "Failed to insert user: " . $e->getMessage();
         }
     }
-}`
+ }
+```
 
 ### Dry Run Mode
 
 - **Dry Run Mode**: When running in dry-run mode, the script performs a simulated execution without making any changes to the database. This is useful for verifying the results before actual execution.
 
-  php
-
-  Copy code
-
-  `if (isset($this->args['dry_run'])) {
+  ```php
+  if (isset($this->args['dry_run'])) {
     $this->printInfo("Dry run mode enabled. No changes will be made to the database.");
     $this->processCSVFile();
-}`
+    }
+  ```
 
 ## About the Author
 
