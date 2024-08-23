@@ -126,7 +126,7 @@ class UserUpload
             $dsn = 'pgsql:host=' . $host . ';dbname=postgres';
             $this->pdo = new \PDO($dsn, $username, $password);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $this->printInfo("Database connection successful.");
+            $this->printInfo("\nDatabase connection successful.\n");
         } catch (\PDOException $e) {
             // Handle connection errors
             $this->printError("Database connection failed: " . $e->getMessage());
@@ -327,22 +327,44 @@ class UserUpload
 
         // Print errors if any
         if (!empty($errors)) {
-            $this->printInfo(self::YELLOW . "\nErrors encountered:\n" . self::RESET);
-            foreach ($errors as $error) {
-                $this->printError("Name: {$error['name']} {$error['surname']} | Email: {$error['email']} | " . self::RESET . " Error: {$error['error']}\n");
+            // Define the maximum number of errors to display
+            $maxDisplayErrors = 20;
+
+            if (count($errors) > $maxDisplayErrors) {
+                // Write errors to a text file if there are more than 20 errors
+                $filePath = 'errors_log.txt'; // Path to the text file
+                $fileHandle = fopen($filePath, 'w'); // Open the file for writing
+
+                if ($fileHandle) {
+                    fwrite($fileHandle, "Errors encountered:\n");
+                    foreach ($errors as $error) {
+                        fwrite($fileHandle, "Name: {$error['name']} {$error['surname']} | 
+                        Email: {$error['email']} | Error: {$error['error']}\n");
+                    }
+                    fclose($fileHandle);
+
+                    $this->printInfo(self::YELLOW . "\n\nMore than $maxDisplayErrors errors encountered. 
+                    Details have been written to $filePath." . self::RESET . "\n");
+                }
+            } else {
+                // Print errors if there are 20 or fewer
+                echo "\n" . PHP_EOL;
+                $this->printInfo(self::YELLOW . "\nErrors encountered:\n" . self::RESET);
+                foreach ($errors as $error) {
+                    $this->printError("Name: {$error['name']} {$error['surname']} | 
+                    Email: {$error['email']} | " . self::RESET . " Error: {$error['error']}\n");
+                }
             }
         }
 
         // Output the total and processed line counts
-        $this->printInfo("Total lines: $totalLines | Processed lines: $processedLines | Errors: " . count($errors) . PHP_EOL);
+        $this->printInfo("Total lines: $totalLines | Processed lines: $processedLines | 
+        Errors: " . count($errors) . PHP_EOL);
 
         // Notify if it's a dry run
         if ($dryRun) {
             $this->printInfo("Dry run completed: No data was inserted into the database." . PHP_EOL);
         }
-
-        // Complete progress bar
-        //$this->displayProgress($totalLines, $totalLines, true);
     }
     /**
      * Inserts multiple user records into the database.
@@ -455,10 +477,7 @@ class UserUpload
         // Output the progress bar
         $status = $complete ? 'Completed' : sprintf('Processing: %d%%', $progress);
         echo sprintf("\r[%s] %s", $bar, $status);
-
-        if ($complete) {
-            echo PHP_EOL; // Newline for completion
-        }
+        //echo "\n" . PHP_EOL;
     }
 
     /**
