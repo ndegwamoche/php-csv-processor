@@ -79,9 +79,9 @@ This project operates as a command-line utility and does not include a graphical
 
 ## Features
 
-- **CSV Parsing & Bulk Upload** : Import user data from a CSV file into a PostgreSQL database.
-- **Email Validation**: Validates email addresses and formats names.
-- **CSV File Validation**: Ensures the CSV file is properly formatted, encoded in UTF-8, and contains the correct number and type of columns.
+- **CSV Parsing** : Import user data from a CSV file into a PostgreSQL database.
+- **Email Validation**: Validates email addresses.
+- **CSV File Validation**: Ensures the CSV file is properly formatted, and contains the correct number and type of columns.
 - **Name Formatting**: Automatically capitalizes the first letter of names and surnames.
 - **Database Table Creation**: Automatically creates or rebuilds the users table in PostgreSQL if needed.
 - **Dry Run Mode**: Allows you to simulate the upload process without modifying the database.
@@ -129,7 +129,7 @@ Here are the common commands for using the `user_upload.php` script:
   ```bash
   php user_upload.php --create_table
   ```
-Creates or rebuilds the `users` table. Optionally provide credentials:
+  Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```bash
   php user_upload.php --create_table -u username -p password -h hostname
@@ -169,13 +169,13 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 2.  **Upload Data**
 
      ```bash
-    php user_upload.php --file mydata.csv -u myuser -p mypass -h localhost
+    php user_upload.php --file users.csv -u myuser -p mypass -h localhost
      ``` 
     
 3.  **Dry Run Upload**
 
      ```bash
-    php user_upload.php --dry_run --file mydata.csv
+    php user_upload.php --dry_run --file users.csv
      ``` 
     
 ## Functions
@@ -201,7 +201,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 - **Usage**:
 
   ```php
-  $lineCount = countLines('path/to/file.csv');
+  $lineCount = countLines('users.csv');
   ```
   
 ### `validateEmail($email)`
@@ -229,7 +229,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 
   ```php
   displayProgress(50, 100);
-    displayProgress(100, 100, true);
+  displayProgress(100, 100, true);
   ```
     
 ### `isValidCsvFile($filename)`
@@ -246,7 +246,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
   $isValid = isValidCsvFile('path/to/file.csv');
   ```
   
-### `(array $users, array &$errors)`
+### `insertUsers(array $users, array &$errors)`
 
 **Inserts multiple user records into the database.**
 
@@ -325,7 +325,7 @@ Creates or rebuilds the `users` table. Optionally provide credentials:
 - **Usage**:
 
   ```php
-  $input = prompt("Enter your name:", "John Doe");
+  $input = prompt("Enter PostgreSQL host (default: localhost):", "localhost");
   ```
 
 ### `connectDatabase()`
@@ -364,16 +364,16 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
   private function printError($message) {
     // Print error messages in red
     echo "\033[31m$message\033[0m\n";
-    }
+  }
      ```
 
 - **Informational Messages**: Informational messages are printed in green to provide feedback on the progress and status of the script.
 
   ```php
-  `private function printInfo($message) {
+  private function printInfo($message) {
     // Print informational messages in green
     echo "\033[32m$message\033[0m\n";
-    }
+  }
    ```
 
 ### Input Validation
@@ -385,7 +385,7 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
     $this->printError("Please enter a command to start.\nPlease use the options below to run the script.");
     $this->printHelp();
     exit(1);
- }
+  }
  ```
 
 ### File Validation
@@ -431,7 +431,7 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
         $this->printError("Database connection failed: " . $e->getMessage());
         exit(1);
     }
-    }
+  }
   ```
 
 - **Record Insertion**: Errors during the insertion of user records into the database are handled individually. The script logs errors for specific records, allowing the remaining records to be processed.
@@ -442,10 +442,11 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
         try {
             // Insert user record
         } catch (Exception $e) {
+            // Handle the error for this specific user and add it to the errors array
             $errors[] = "Failed to insert user: " . $e->getMessage();
         }
     }
- }
+  }
 ```
 
 ### Dry Run Mode
@@ -456,8 +457,11 @@ The PHP CSV Processor script includes several mechanisms for error handling to e
   if (isset($this->args['dry_run'])) {
     $this->printInfo("Dry run mode enabled. No changes will be made to the database.");
     $this->processCSVFile();
-    }
+  }
   ```
+## Project Wrap-Up
+
+In conclusion, this project successfully demonstrates the integration of various technologies and best practices to create a robust and efficient solution for processing and managing CSV data in a PostgreSQL database. By leveraging PHP's capabilities and adhering to industry standards, the project not only ensures data integrity and security but also provides a flexible and scalable framework for future enhancements. The implementation of detailed error handling, user authentication, and seamless database operations reflects a deep commitment to quality and performance. This project serves as a solid foundation for further development and showcases the importance of well-structured code and thoughtful design in achieving reliable software solutions.
 
 ## About the Author
 
