@@ -98,8 +98,13 @@ This project operates as a command-line utility and does not include a graphical
 ### Setup
 
 1.  **Clone the Repository**
+        ```json
+git clone https://github.com/ndegwamoche/php-csv-processor.git
+        cd php-csv-processor
+}
+```
 
-        ```bash
+        ```json
         git clone https://github.com/ndegwamoche/php-csv-processor.git
         cd php-csv-processor
         ```
