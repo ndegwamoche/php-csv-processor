@@ -338,28 +338,28 @@ class UserUpload
                 if ($fileHandle) {
                     fwrite($fileHandle, "Errors encountered:\n");
                     foreach ($errors as $error) {
-                        fwrite($fileHandle, "Name: {$error['name']} {$error['surname']} | 
-                        Email: {$error['email']} | Error: {$error['error']}\n");
+                        fwrite($fileHandle, "Name: {$error['name']} {$error['surname']} | " .
+                            "Email: {$error['email']} | Error: {$error['error']}\n");
                     }
                     fclose($fileHandle);
 
-                    $this->printInfo(self::YELLOW . "\n\nMore than $maxDisplayErrors errors encountered. 
-                    Details have been written to $filePath." . self::RESET . "\n");
+                    $this->printInfo(self::YELLOW . "\n\nMore than $maxDisplayErrors errors encountered. " .
+                        "Details have been written to $filePath." . self::RESET . "\n");
                 }
             } else {
                 // Print errors if there are 20 or fewer
                 echo "\n" . PHP_EOL;
                 $this->printInfo(self::YELLOW . "\nErrors encountered:\n" . self::RESET);
                 foreach ($errors as $error) {
-                    $this->printError("Name: {$error['name']} {$error['surname']} | 
-                    Email: {$error['email']} | " . self::RESET . " Error: {$error['error']}\n");
+                    $this->printError("Name: {$error['name']} {$error['surname']} |" .
+                        " Email: {$error['email']} | " . self::RESET . " Error: {$error['error']}\n");
                 }
             }
         }
 
         // Output the total and processed line counts
-        $this->printInfo("Total lines: $totalLines | Processed lines: $processedLines | 
-        Errors: " . count($errors) . PHP_EOL);
+        $this->printInfo("Total lines: $totalLines | Processed lines: $processedLines |" .
+            " Errors: " . count($errors) . PHP_EOL);
 
         // Notify if it's a dry run
         if ($dryRun) {
