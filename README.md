@@ -106,12 +106,10 @@ This project operates as a command-line utility and does not include a graphical
 
     Ensure you have Composer installed, then run:
 
-    bash
-
-    Copy code
-
-    `composer install`
-
+    <pre><code>
+    composer install
+    </code></pre>
+    
 4.  **Configure Database Connection**
 
     Database credentials can be specified via command-line options when running the script.
@@ -122,88 +120,68 @@ Here are the common commands for using the `user_upload.php` script:
 
 - **Show Help**
 
-  bash
-
-  Copy code
-
-  `php user_upload.php --help`
-
+  <pre><code>
+  php user_upload.php --help
+  </code></pre>
+  
   Displays available commands and options.
 
 - **Create or Rebuild Table**
 
-  bash
-
-  Copy code
-
-  `php user_upload.php --create_table`
-
+  <pre><code>
+  php user_upload.php --create_table
+  </code></pre>
+  
   Creates or rebuilds the `users` table. Optionally provide credentials:
 
-  bash
-
-  Copy code
-
-  `php user_upload.php --create_table -u username -p password -h hostname`
-
+  <pre><code>
+  php user_upload.php --create_table -u username -p password -h hostname
+  </code></pre>
+  
 - **Upload User Data**
 
-  bash
-
-  Copy code
-
-  `php user_upload.php --file users.csv`
-
+  <pre><code>
+  php user_upload.php --file users.csv
+  </code></pre>
+  
   Uploads data from `users.csv` into the database. Optionally provide credentials:
 
-  bash
-
-  Copy code
-
-  `php user_upload.php --file users.csv -u username -p password -h hostname`
-
+  <pre><code>
+  php user_upload.php --file users.csv -u username -p password -h hostname
+  </code></pre>
+  
 - **Dry Run**
 
-  bash
-
-  Copy code
-
-  `php user_upload.php --dry_run`
-
+  <pre><code>
+  php user_upload.php --dry_run
+  </code></pre>
+  
   Simulates the upload process without actual changes. Optionally specify a CSV file:
 
-  bash
-
-  Copy code
-
-  `php user_upload.php --dry_run --file users.csv`
-
+  <pre><code>
+  php user_upload.php --dry_run --file users.csv
+  </code></pre> 
+   
 ### Example Commands
 
 1.  **Create the Table**
 
-    bash
-
-    Copy code
-
-    `php user_upload.php --create_table -u myuser -p mypass -h localhost`
-
+   <pre><code>
+    php user_upload.php --create_table -u myuser -p mypass -h localhost
+    </code></pre> 
+    
 2.  **Upload Data**
 
-    bash
-
-    Copy code
-
-    `php user_upload.php --file mydata.csv -u myuser -p mypass -h localhost`
-
+   <pre><code>
+    php user_upload.php --file mydata.csv -u myuser -p mypass -h localhost
+    </code></pre> 
+    
 3.  **Dry Run Upload**
 
-    bash
-
-    Copy code
-
-    `php user_upload.php --dry_run --file mydata.csv`
-
+    <pre><code>
+    php user_upload.php --dry_run --file mydata.csv
+    </code></pre> 
+    
 ## Functions
 
 ### `run()`
