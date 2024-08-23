@@ -99,8 +99,8 @@ This project operates as a command-line utility and does not include a graphical
 
 1.  **Clone the Repository**
 
-        `git clone https://github.com/ndegwamoche/php-csv-processor.git`
-        `cd php-csv-processor`
+        git clone https://github.com/ndegwamoche/php-csv-processor.git
+        cd php-csv-processor
 
 3.  **Install Dependencies**
 
