@@ -6,8 +6,8 @@ The **PHP CSV Processor** is a command-line script designed for bulk importing u
 
 ## Tech Stack
 
-- **Programming Language**: PHP Version 8.2.x or higher installed on your system.
-- **Database**: PostgreSQL Version 16.4 or higher installed and running.
+- **Programming Language**: PHP Version 8.2.x or higher.
+- **Database**: PostgreSQL Version 16.4 or higher.
 - **CSV File**: A properly formatted CSV file containing user data.
 - **Dependency Management**: Composer
 
@@ -40,7 +40,7 @@ This specifies that PHP CodeSniffer is a development dependency, allowing you to
 
 This project operates as a command-line utility and does not include a graphical user interface. Below is an example of how to interact with the script through the terminal.
 
-<!-- Replace with actual GIF or image link -->
+![PHP CSV processor image file with a screenshot of the help section](https://raw.githubusercontent.com/ndegwamoche/php-csv-processor/main/php-csv-processor.png?token=GHSAT0AAAAAACRDK2AYUXS6JMBNFY56V4GEZWIRHEA)
 
 ## Features
 
