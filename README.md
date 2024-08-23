@@ -99,14 +99,11 @@ This project operates as a command-line utility and does not include a graphical
 
 1.  **Clone the Repository**
 
-        bash
-
-        Copy code
-
-        `git clone https://github.com/ndegwamoche/php-csv-processor.git
-
-    cd php-csv-processor`
-
+        ```bash
+        git clone https://github.com/ndegwamoche/php-csv-processor.git
+        
+    cd php-csv-processor
+    ```
 2.  **Install Dependencies**
 
     Ensure you have Composer installed, then run:
