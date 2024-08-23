@@ -101,10 +101,9 @@ This project operates as a command-line utility and does not include a graphical
 
         ```bash
         git clone https://github.com/ndegwamoche/php-csv-processor.git
-        
-    cd php-csv-processor
-    ```
-2.  **Install Dependencies**
+        cd php-csv-processor
+        ```
+3.  **Install Dependencies**
 
     Ensure you have Composer installed, then run:
 
@@ -114,7 +113,7 @@ This project operates as a command-line utility and does not include a graphical
 
     `composer install`
 
-3.  **Configure Database Connection**
+4.  **Configure Database Connection**
 
     Database credentials can be specified via command-line options when running the script.
 
