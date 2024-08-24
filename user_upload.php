@@ -470,7 +470,6 @@ class UserUpload
      */
     private function displayProgress($processedLines, $totalLines, $complete = false)
     {
-
         // Calculate the progress percentage
         $progress = $totalLines > 0 ? ($processedLines / $totalLines) * 100 : 0;
 
